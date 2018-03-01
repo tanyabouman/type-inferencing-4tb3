@@ -1,11 +1,13 @@
-all: ExecSummary ExecSummary.pdf
+all: ExecSummary.pdf
 
 ExecSummary: ExecSummary.lhs
 	ghc --make ExecSummary.lhs
 
-ExecSummary.pdf: ExecSummary.tex
-	latex ExecSummary.tex
-	pdflatex ExecSummary.tex
+ExecSummary.pdf: ExecSummary.lhs
+	pdflatex ExecSummary.lhs
+	bibtex ExecSummary
+	pdflatex ExecSummary.lhs
+	pdflatex ExecSummary.lhs
 
 ExecSummary.tex: ExecSummary.lhs
 	lhs2TeX ExecSummary.lhs > ExecSummary.tex

@@ -18,7 +18,7 @@
 \begin{document}
 
 \title{Type Inferencing for Functional Programming Languages}
-\author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima} 
+\author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima \\ ashworel, boumante, fiberet} 
 \maketitle
 
 
