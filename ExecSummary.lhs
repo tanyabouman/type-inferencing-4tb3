@@ -25,7 +25,7 @@
 % I'm just taking things from the description pdf
 \section{High Level Description} This project is about compilers for functional programming languages, written in a functional programming language.
 
-\section{Area of Focus} In particular, we are focussing on type inferencing system for a toy language 
+\section{Area of Focus} In particular, we are focusing on type inferencing system for a toy language 
 
 
 \section{Implementation}  Similar to Martin Grab{\"u}ller's paper (cite https://github.com/wh5a/Algorithm-W-Step-By-Step), we would like to explain type inferencing with an example algorithm.  
