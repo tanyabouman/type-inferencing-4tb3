@@ -25,7 +25,7 @@
 % I'm just taking section from the description pdf
 \section{High Level Description} This project is about compilers and compiler construction for functional programming languages, written in a functional programming language.
 
-\section{Area of Focus} In particular, we are focusing on type inferencing for a toy language.  This toy language features Haskell-like syntax, but has a simpler type system, featuring only Ints, Bools, Strings and Functions on those types.
+\section{Area of Focus} In particular, we are focusing on type inferencing for a toy language.  This toy language features Haskell-like syntax, but has a simpler type system, featuring only Ints, Bools, Strings and Functions.
 
 
 \section{Implementation}  Similar to Martin Grabm{\"u}ller's paper \cite{algwstepbystep}, we would like to explain type inferencing with an example algorithm.  
