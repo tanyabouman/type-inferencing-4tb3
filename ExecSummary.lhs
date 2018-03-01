@@ -23,7 +23,7 @@
 
 
 % I'm just taking things from the description pdf
-\section{High Level Description} This project is about compilers and complier construction for functional programming languages, written in a functional programming language.
+\section{High Level Description} This project is about compilers and compiler construction for functional programming languages, written in a functional programming language.
 
 \section{Area of Focus} In particular, we are focusing on type inferencing system for a toy language. 
 
@@ -34,7 +34,7 @@ In addition to the content explained in his paper, we also need to explain the b
 
 
 \section{Relevance to the Field}  This subject is important because while in many languages, such as C and Java, all types must be explicitly declared, this is not the case for functional languages.  
-In many functional languages, such as Haskell, it is not necesary to specify all types, since the compiler can infer them.  A common system to accomplish this is the Hindley-Milner type inference, which has two main algorithms, Algorithm W and Algorithm M.  (talk about the differences between the two.  Cite the papers listed here https://www.quora.com/What-are-the-differences-between-Algorithm-W-and-Algorithm-M) 
+In many functional languages, such as Haskell, it is not necessary to specify all types, since the compiler can infer them.  A common system to accomplish this is the Hindley-Milner type inference, which has two main algorithms, Algorithm W and Algorithm M.  (talk about the differences between the two.  Cite the papers listed here https://www.quora.com/What-are-the-differences-between-Algorithm-W-and-Algorithm-M) 
 
 
 
