@@ -1,0 +1,7 @@
+Slide 1
+E: Hi I’m Emily!
+Ta: I’m Tanya!
+To: And I’m Tonye!
+TBA: Today we’re going to be talking about Type Inferencing in functional languages.
+
+Slide 2
