@@ -28,8 +28,26 @@ ashworel, boumante, fiberet}
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables,
 by doing type inferencing at compile time.
-Others, like Python, also allow the programming to avoid defining
-the type of a variable, but this is not checked at compilation.  % cite this
+Others, like Python, also allow the programmer to avoid defining
+the type of a variable, but these types are dynamic\cite{pythonsummary}, 
+and therefore not the topic of the currrent report.
+
+These languages use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.  (cite something)  Algorithm W is standard algorithm, first done by ( somebody ), while Algorithm M was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
+
+% explain the difference between M and W
+
+
+
+% let-polymorphic is something that you might come across in reading
+% it's only really relevent when polymorphism is available 
+% (e.g.) f :: a -> a, where a could be any type
+% this is not the case in our toy language, so don't worry about it for now
+% if there's time later, we'll get to this
+
+
+
+% swift type inferencing description; maybe useful as a reference??? https://github.com/apple/swift/blob/master/docs/TypeChecker.rst
+
 
 \bibliographystyle{ieeetr}
 \bibliography{bib.bib}
