@@ -3,6 +3,7 @@
 \usepackage{url}
 \usepackage{hyperref} % for inserting the link
 \usepackage{calculation}
+\usepackage{verbatim} % for multiline comments
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{color}
@@ -21,6 +22,12 @@
     literate={•}{{$\bullet$}}1,  % defining the bullet
     }}
   {}
+
+\begin{comment}
+\begin{code}
+import qualified Data.Map as M
+\end{code}
+\end{comment}
 
 \newcommand{\M}{$\mathcal{M}$}
 \newcommand{\W}{$\mathcal{W}$}
@@ -70,18 +77,18 @@ inferencing algorithm will detect that.
 
 -- these are the currently available types;
 -- this might be expanded
-data Type = MyString
-          | MyInteger
-          | MyBool
+data Type = TString
+          | TInteger
+          | TBool
           | Unknown
-          | Func Type Type
+          | TFunc Type Type
           deriving (Eq, Ord, Show)
 
 data Expression = Var String Type
                 | IntLiteral Int Type
                 | StringLiteral String Type
                 | BoolLiteral Bool Type
-                | Function Var Expression Type
+                | EFunc String Expression Type
                 | Application Expression Expression Type
                 deriving (Eq, Ord, Show)
 \end{code}
@@ -121,8 +128,8 @@ but for now, it just checks that the two types match.
 unify :: Type -> Type -> Maybe Type
 unify Unknown t = Just t
 unify t Unknown = Just t
-unify (Function a b) (Function c d) =
-  Function <$> (unify a c) <$> (unify b d)
+unify (TFunc a b) (TFunc c d) =
+  TFunc <$> (unify a c) <$> (unify b d)
 unify s t =
   case s of
     t -> Just s
@@ -136,11 +143,11 @@ signature, we simply return integer as the type.
 Otherwise there is an error.
 % maybe include an example of how to get this error
 \begin{code}
-type TypeEnv = Map.Map Var Type
+type TypeEnv = M.Map String Type
 
 infer :: TypeEnv -> Expression -> Type
 infer _ e@(IntLiteral i typ) =
-  case unify MyInteger typ of
+  case unify TInteger typ of
     Nothing -> error ("Type mismatch: " ++ show e)
     Just i -> i
 
@@ -155,7 +162,7 @@ If the variable is not defined or the type does not match, there is an
 error.
 \begin{code}
 infer env e@(Var v typ) =
-  case Map.lookup v env of
+  case M.lookup v env of
     Nothing -> error ("Variable not in scope: " ++ show e)
     Just t ->
       case unify t typ of
@@ -168,19 +175,19 @@ function needs to be made available in the context for the body of the
 function.
 
 \begin{code}
-infer env e@(Function v e typ) =
-  case unify typ (Function Unknown Unknown) of
+infer env e@(EFunc v exp typ) =
+  case unify typ (TFunc Unknown Unknown) of
     Nothing -> error ("Type mismatch: " ++ show e)
-    Just (Function in out) -> Func in (infer (Map.insert v in env) e)
+    Just (TFunc fin fout) -> TFunc fin (infer (M.insert v fin env) e)
 \end{code}
 
 
 \begin{code}
 infer env e@(Application e1 e2 typ) =
-  case Map.lookup e1 env of
-    Just (Func in out) ->
-      case unify out typ of
-        Just o -> infer env e2 in
+  case M.lookup e1 env of
+    Just (TFunc fin fout) ->
+      case unify fout typ of
+        Just o -> infer env e2 fin
         Nothing -> error ("Type mismatch: " ++ show e1 ++ " and " ++ show e2)
     _ -> error ("Tried to apply: " ++ show e1 ++ " to variable " ++ show e2 ++ " when " ++ show e1 ++ " is not a function")
 \end{code}

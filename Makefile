@@ -12,11 +12,11 @@ ExecSummary.pdf: ExecSummary.lhs
 ExecSummary.tex: ExecSummary.lhs
 	lhs2TeX ExecSummary.lhs > ExecSummary.tex
 
-report: report.tex
-	pdflatex report.tex
+report.pdf: report.lhs
+	pdflatex report.lhs
 	bibtex report
-	pdflatex report.tex
-	pdflatex report.tex
+	pdflatex report.lhs
+	pdflatex report.lhs
 
 clean:
 	rm -f *tex *aux *log *out *ptb *~ *dvi *hi *o ExecSummary
