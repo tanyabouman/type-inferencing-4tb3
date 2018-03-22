@@ -5,15 +5,23 @@ To: And I’m Tonye!
 E: Today we’re going to talk about Type Inferencing in functional languages.
 
 Slide 2
-E: We've all seen a line of code like this many times over in languages, like Java or c++. When we have type inferencing though, we don't need to declare x as an int. The program does it for us. 
+E: We've all seen a line of code like this many times over in languages like Java or c++. When we have type inferencing though, we don't need to declare x or y as an int. The program does it for us. 
 
 To: Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
 
 Slide 3
-Ta: How it works and evaluation rules.
+To: What we're doing is working with a toy language to experiment with algorithm M. 
+
+Ta: Normally in type inferencing, the language uses algorithm W to infer the types, which works top down. Algorithm M on the other hand, works bottom up.
 
 Slide 4
-Demo
+E: As we mentioned, we're working with a toy language which is in Haskell and only uses expressions. Here you can see the different things an expression can be.
 
-Slide 5
+Slides 5 & 6
+Ta: Evaluation rules explantions.
+
+Slide 7
+To: And now for a short demonstartion.
+
+Slide 8
 E: The End!
