@@ -1,7 +1,19 @@
 Slide 1
-E: Hi I’m Emily!
-Ta: I’m Tanya!
-To: And I’m Tonye!
-TBA: Today we’re going to be talking about Type Inferencing in functional languages.
+E: Hi Iâ€™m Emily!
+Ta: Iâ€™m Tanya!
+To: And Iâ€™m Tonye!
+E: Today weâ€™re going to talk about Type Inferencing in functional languages.
 
 Slide 2
+E: We've all seen a line of code like this many times over in languages, like Java or c++. When we have type inferencing though, we don't need to declare x as an int. The program does it for us. 
+
+To: Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
+
+Slide 3
+Ta: How it works and evaluation rules.
+
+Slide 4
+Demo
+
+Slide 5
+E: The End!
