@@ -5,12 +5,10 @@ To: And I’m Tonye!
 E: Today we’re going to talk about Type Inferencing in functional languages.
 
 Slide 2
-E: We've all seen a line of code like this many times over in languages like Java or c++. When we have type inferencing though, we don't need to declare x or y as an int. The program does it for us. 
-
-To: Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
+E: We've all seen a line of code like this many times over in languages like Java or c++. When we have type inferencing though, we don't need to declare x or y as an int. The program does it for us. Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
 
 Slide 3
-E: We're working with a toy language which is in Haskell and only uses expressions. Here you can see the different things an expression can be.
+To: We're working with a toy language which is similar to Haskell and only uses expressions. Here you can see the different things an expression can be.
 
 Slides 4 & 5
 Ta: Evaluation rules explantions.  
@@ -37,15 +35,13 @@ be a function, and that the input type of the function matches the argument
 given.  Additionally, the whole expression must match its context.
 
 Slide 6
-To: Normally in type inferencing, the language uses algorithm W to infer the types, however there is another to consider, algorithm M.
-
-E: The difference between the algorithms is that they are essentially the inverse of each other. This includes in approach, number of expressions, and in name.
+To: Normally in type inferencing, the language uses algorithm W to infer the types, however there is another to consider, algorithm M. The difference between the algorithms is that they are essentially the inverse of each other. This includes in approach, number of expressions, and in name.
 
 Slide 7
-Ta: We plan to work with algorithm M as it is the less explored option.
+E: We plan to work with algorithm M as it is the less explored option.
 
 Slide 8
-To: And now for a short demonstartion.
+E: And now for a short demonstartion.
 
 Slide 9
 E: The End!
