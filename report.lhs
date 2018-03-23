@@ -82,7 +82,7 @@ data Type = TString
           | TBool
           | Unknown
           | TFunc Type Type
-          deriving (Eq, Ord, Show)
+          deriving (Eq, Ord)
 
 data Expression = Var String Type
                 | IntLiteral Int Type
@@ -90,23 +90,57 @@ data Expression = Var String Type
                 | BoolLiteral Bool Type
                 | EFunc String Expression Type
                 | Application Expression Expression Type
-                deriving (Eq, Ord, Show)
+                deriving (Eq, Ord)
 \end{code}
 
 Pretty printing the language is necessary in order to give proper errors that
 relate back to the actual code.
 
 \begin{code}
+instance Show Expression where
+  show (IntLiteral int typ) =
+    case typ of
+      Unknown -> show int
+      _ -> show int ++ " :: " ++ show typ
+  show (StringLiteral str typ) =
+    case typ of
+      Unknown -> show str
+      _ -> show str ++ " :: " ++ show typ
+  show (BoolLiteral bl typ) =
+    case typ of
+      Unknown -> show bl
+      _ -> show bl ++ " :: " ++ show typ
+  show (Var str typ) =
+    case typ of
+      Unknown -> str
+      _ -> str ++ " :: " ++ show typ
+  show (EFunc str exp typ) =
+    let
+      funStr =  "(\\" ++ str ++ " -> " ++ show exp ++ " )"
+    in
+    case typ of
+      Unknown -> funStr
+      _ -> funStr ++ " :: " ++ show typ
+  show (Application e1 e2 typ) =
+    case typ of
+      Unknown -> show e1 ++ " " ++ show e2
+      _ -> "(" ++ show e1 ++ " " ++ show e2 ++ ") :: " ++ show typ
 
+instance Show Type where
+  show TString = "String"
+  show TInteger = "Int"
+  show TBool = "Bool"
+  show Unknown = "?"
+  show (TFunc t1 t2) = show t1 ++ " -> " ++ show t2
 \end{code}
 
 % as we explain how the algorithm works, make the code
 \section{Code}
 
-Here is an example.
+Here are examples.
 \begin{code}
-
-
+test1 = infer M.empty (IntLiteral 5 TInteger)
+test2 = infer M.empty (IntLiteral 5 TBool)
 
 \end{code}
 
@@ -115,8 +149,6 @@ from the expressions to their types.
 
 This is inference with \M
 
-Variables should not be a separate thing from functions, because
-we don't yet know if the types will be Int or Int -> Int or whatever.
 
 \begin{code}
 
@@ -129,11 +161,11 @@ unify :: Type -> Type -> Maybe Type
 unify Unknown t = Just t
 unify t Unknown = Just t
 unify (TFunc a b) (TFunc c d) =
-  TFunc <$> (unify a c) <$> (unify b d)
+  TFunc <$> (unify a c) <*> (unify b d)
 unify s t =
-  case s of
-    t -> Just s
-    _ -> Nothing
+  if s == t
+  then Just s
+  else Nothing
 \end{code}
 
 
@@ -184,12 +216,25 @@ infer env e@(EFunc v exp typ) =
 
 \begin{code}
 infer env e@(Application e1 e2 typ) =
-  case M.lookup e1 env of
-    Just (TFunc fin fout) ->
-      case unify fout typ of
-        Just o -> infer env e2 fin
-        Nothing -> error ("Type mismatch: " ++ show e1 ++ " and " ++ show e2)
-    _ -> error ("Tried to apply: " ++ show e1 ++ " to variable " ++ show e2 ++ " when " ++ show e1 ++ " is not a function")
+  let
+    -- infer the type of e1
+    e1type = infer env e1
+    e2type = infer env e2
+  in
+    -- unify that with what the output of the function should be
+    case unify e1type (TFunc Unknown typ) of
+      Just (TFunc fin fout) ->
+        -- match the input type with the argument
+        case unify e2type fin of
+          Just t ->
+            -- match the return type with the overall type
+            case unify fout typ of
+              Just s -> s
+              Nothing -> error $ "Could not match: " ++ show fout ++ " and " ++ show typ
+          Nothing -> error $ "Could not match: " ++ show e2type ++ " and " ++ show fin
+      _ -> error $ "Could not match: " ++ show e1type ++ " and " ++ show typ
+
+
 \end{code}
 
 
