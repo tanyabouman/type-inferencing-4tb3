@@ -116,7 +116,7 @@ instance Show Expression where
       _ -> str ++ " :: " ++ show typ
   show (EFunc str exp typ) =
     let
-      funStr =  "(\\" ++ str ++ " -> " ++ show exp ++ " )"
+      funStr =  "(\\" ++ str ++ " -> " ++ show exp ++ ")"
     in
     case typ of
       Unknown -> funStr
@@ -140,6 +140,7 @@ instance Show Type where
 Here are examples.
 
 \begin{itemize}
+
 \item A literal `5' with type Int.
 \begin{code}
 example1 = IntLiteral 5 TInteger
@@ -169,6 +170,44 @@ test3 = infer M.empty example3
 \begin{code}
 example4 = BoolLiteral True Unknown
 test4 = infer M.empty example4
+\end{code}
+
+\item
+
+\begin{code}
+example5 = StringLiteral "Hello world" Unknown
+test5 = infer M.empty example5
+\end{code}
+
+\item
+
+\begin{code}
+example6 = StringLiteral "Hi there" TBool
+test6 = infer M.empty example6
+\end{code}
+
+\item
+\begin{code}
+example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
+test7 = infer M.empty example7
+\end{code}
+
+
+\item
+\begin{code}
+example8 = Application example7 (IntLiteral 5 Unknown) Unknown
+test8 = infer M.empty example8
+\end{code}
+
+\item
+\begin{code}
+example9 = EFunc "x" (Var "x" Unknown) Unknown
+test9 = infer M.empty example9
+\end{code}
+
+\item
+\begin{code}
+example10 = Application example9 (IntLiteral 10 Unknown) Unknown
 \end{code}
 
 \end{itemize}
@@ -214,7 +253,11 @@ infer _ e@(BoolLiteral b typ) =
     Nothing -> error $ "Type mismatch: literal " ++ show b
                ++ " cannot have type " ++ show typ
     Just b -> b
--- do the same for the other constants
+infer _ e@(StringLiteral s typ) =
+  case unify TString typ of
+    Nothing -> error $ "Type mismatch: literal " ++ show s
+               ++ " cannot have type " ++ show typ
+    Just s -> s
 \end{code}
 
 
@@ -241,7 +284,7 @@ function.
 infer env e@(EFunc v exp typ) =
   case unify typ (TFunc Unknown Unknown) of
     Nothing -> error ("Type mismatch: " ++ show e)
-    Just (TFunc fin fout) -> TFunc fin (infer (M.insert v fin env) e)
+    Just (TFunc fin fout) -> TFunc fin (infer (M.insert v fin env) exp)
 \end{code}
 
 
