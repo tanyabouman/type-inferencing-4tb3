@@ -10,7 +10,7 @@ E: We've all seen a line of code like this many times over in languages like Jav
 To: Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
 
 Slide 3
-To: What we're doing is working with a toy language to experiment with algorithm M. 
+To: We are going to be working with a haskell-like toy language to experiment how on an approach type inferencing in functional languages. 
 
 Ta: Normally in type inferencing, the language uses algorithm W to infer the types, which works top down. Algorithm M on the other hand, works bottom up.
 
