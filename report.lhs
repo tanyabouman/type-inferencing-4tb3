@@ -95,7 +95,7 @@ data Expression = Var String Type
 
 Pretty printing the language is necessary in order to give proper errors that
 relate back to the actual code.
-
+% is there a benefit to separating pretty from show?
 \begin{code}
 instance Show Expression where
   show (IntLiteral int typ) =
@@ -138,14 +138,40 @@ instance Show Type where
 \section{Code}
 
 Here are examples.
-\begin{code}
-test1 = infer M.empty (IntLiteral 5 TInteger)
-test2 = infer M.empty (IntLiteral 5 TBool)
 
+\begin{itemize}
+\item A literal `5' with type Int.
+\begin{code}
+example1 = IntLiteral 5 TInteger
+test1 = infer M.empty example1
+\end{code}
+Unsurprisingly, this returns the type \texttt{TInteger}, since both the 
+value of the literal and the type signature of the literal indicate
+that it is an integer.
+
+\item This, on the other hand, produces an error, because the value
+`5' cannot have type \texttt{TBool}.  
+\begin{code}
+example2 = IntLiteral 5 TBool
+test2 = infer M.empty example2
 \end{code}
 
-After we call \texttt{infer} on \texttt{program}, the results is a mapping
-from the expressions to their types.
+\item Now we move beyond checking whether or not the type signature is
+correct, to infering a type when the signature is missing.
+
+\begin{code}
+example3 = IntLiteral 5 Unknown
+test3 = infer M.empty example3
+\end{code}
+
+\item
+
+\begin{code}
+example4 = BoolLiteral True Unknown
+test4 = infer M.empty example4
+\end{code}
+
+\end{itemize}
 
 This is inference with \M
 
@@ -180,9 +206,14 @@ type TypeEnv = M.Map String Type
 infer :: TypeEnv -> Expression -> Type
 infer _ e@(IntLiteral i typ) =
   case unify TInteger typ of
-    Nothing -> error ("Type mismatch: " ++ show e)
+    Nothing -> error $ "Type mismatch: literal " ++ show i 
+               ++ " cannot have type " ++ show typ
     Just i -> i
-
+infer _ e@(BoolLiteral b typ) =
+  case unify TBool typ of
+    Nothing -> error $ "Type mismatch: literal " ++ show b
+               ++ " cannot have type " ++ show typ
+    Just b -> b
 -- do the same for the other constants
 \end{code}
 

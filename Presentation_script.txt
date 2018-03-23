@@ -18,10 +18,35 @@ Slide 4
 E: As we mentioned, we're working with a toy language which is in Haskell and only uses expressions. Here you can see the different things an expression can be.
 
 Slides 5 & 6
-Ta: Evaluation rules explantions.
+Ta: Evaluation rules explantions.  
+Each of these rules corresponds to one of the possibilities for an expression.
+The first one corresponds to a constant literal.  The type of a constant literal is just whatever type is indicated by the literal.
+So if the literal is a number, then in our language, the type must be an integer.  If the literal is a string, then it's a string.
+
+The next one corresponds to a variable expression.  In order to know what 
+the type of a variable is, we look it up in the surrounding context to see
+what it previous definitions made it.  Then we have to compare the previous
+definitions to whatever the immediate context of the variable is now telling
+us.  Perhaps it is an argument to a function.  The input type of the 
+function must the type of the variable.
+
+Then we have the function and function application expressions.  
+This is where inferencing gets really interesting.  In the case of the
+function, we need to check that its implied type from surrounding context,
+whether a type signature or something else, is in fact a function type.
+Then we check the body of the expression for its type and match it up with
+the argument type.
+
+The application of the function requires that the first expression actually
+be a function, and that the input type of the function matches the argument
+given.  Additionally, the whole expression must match its context.
 
 Slide 7
 To: And now for a short demonstartion.
+
+(the examples are called example1, example2, example3, ... 
+the inference results are called test1, test2, test3, ...
+just run these in ghci)
 
 Slide 8
 E: The End!
