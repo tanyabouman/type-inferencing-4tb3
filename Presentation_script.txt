@@ -8,7 +8,7 @@ Slide 2
 E: We've all seen a line of code like this many times over in languages like Java or c++. When we have type inferencing though, we don't need to declare x or y as an int. The program does it for us. Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
 
 Slide 3
-To: We're working with a toy language which is similar to Haskell and only uses expressions. Here you can see the different things an expression can be.
+To: We're working with a toy language which is similar to Haskell. For our language rules we are going to consider an abstract syntax with just expression, no statements. Our expressions are...
 
 Slides 4 & 5
 Ta: Evaluation rules explantions.  
@@ -35,7 +35,7 @@ be a function, and that the input type of the function matches the argument
 given.  Additionally, the whole expression must match its context.
 
 Slide 6
-To: Normally in type inferencing, the language uses algorithm W to infer the types, however there is another to consider, algorithm M. The difference between the algorithms is that they are essentially the inverse of each other. This includes in approach, number of expressions, and in name.
+To: For our project we condidered two basic algorithms for implementing type inferencing. Normally in type inferencing, the language uses algorithm W to infer the types, however there is another to consider, algorithm M. The difference between the algorithms is that they are essentially the inverse of each other. This includes in approach, number of expressions, and in name.
 
 Slide 7
 E: We plan to work with algorithm M as it is the less explored option.
