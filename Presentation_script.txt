@@ -10,14 +10,9 @@ E: We've all seen a line of code like this many times over in languages like Jav
 To: Type inferencing is a common feature, paricularly in functional languages. You can see it in languages like Haskell, Swift, and more.
 
 Slide 3
-To: We are going to be working with a haskell-like toy language to experiment how on an approach type inferencing in functional languages. 
+E: We're working with a toy language which is in Haskell and only uses expressions. Here you can see the different things an expression can be.
 
-Ta: Normally in type inferencing, the language uses algorithm W to infer the types, which works top down. Algorithm M on the other hand, works bottom up.
-
-Slide 4
-E: As we mentioned, we're working with a toy language which is in Haskell and only uses expressions. Here you can see the different things an expression can be.
-
-Slides 5 & 6
+Slides 4 & 5
 Ta: Evaluation rules explantions.  
 Each of these rules corresponds to one of the possibilities for an expression.
 The first one corresponds to a constant literal.  The type of a constant literal is just whatever type is indicated by the literal.
@@ -41,12 +36,16 @@ The application of the function requires that the first expression actually
 be a function, and that the input type of the function matches the argument
 given.  Additionally, the whole expression must match its context.
 
-Slide 7
-To: And now for a short demonstartion.
+Slide 6
+To: Normally in type inferencing, the language uses algorithm W to infer the types, however there is another to consider, algorithm M.
 
-(the examples are called example1, example2, example3, ... 
-the inference results are called test1, test2, test3, ...
-just run these in ghci)
+E: The difference between the algorithms is that they are essentially the inverse of each other. This includes in approach, number of expressions, and in name.
+
+Slide 7
+Ta: We plan to work with algorithm M as it is the less explored option.
 
 Slide 8
+To: And now for a short demonstartion.
+
+Slide 9
 E: The End!
