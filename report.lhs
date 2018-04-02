@@ -32,7 +32,7 @@ import qualified Data.Map as M
 \newcommand{\M}{$\mathcal{M}$}
 \newcommand{\W}{$\mathcal{W}$}
 
-\title{4TB3 } 
+\title{Type Inferencing in Functional Languages} 
 \author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima \\ 
 001402976, 001416669, 001231043 \\ 
 ashworel, boumante, fiberet}
