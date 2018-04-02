@@ -32,7 +32,7 @@ import qualified Data.Map as M
 \newcommand{\M}{$\mathcal{M}$}
 \newcommand{\W}{$\mathcal{W}$}
 
-\title{4TB3 } 
+\title{Type Inferencing in Functional Languages} 
 \author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima \\ 
 001402976, 001416669, 001231043 \\ 
 ashworel, boumante, fiberet}
@@ -43,23 +43,19 @@ ashworel, boumante, fiberet}
 \maketitle
 
 \section{Introduction}
-% what is type inferencing?
-% history
-
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables,
 by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
 the type of a variable, but these types are dynamic\cite{pythonsummary}, 
 and therefore not the topic of the currrent report.
+Languages that do type inferencing use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.
 
-These languages use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.  (cite something)  Algorithm W is standard algorithm, first done by ( somebody ), while Algorithm M was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
-
-% explain the difference between M and W
-
-
-
-
+\subsection{History}
+Algorithm W is standard algorithm, first done by ( somebody ), while Algorithm M was not formally presented 
+until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. Algorithm W is an algorithm that works bottom to top.
+This means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom. Algorithm M
+is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down.
 
 
 \section{Our Toy Language}
@@ -328,6 +324,10 @@ infer env e@(Application e1 e2 typ) =
 
 
 % swift type inferencing description; maybe useful as a reference??? https://github.com/apple/swift/blob/master/docs/TypeChecker.rst
+
+\section{Discussion}
+
+\section{Conclusion}
 
 
 \bibliographystyle{ieeetr}
