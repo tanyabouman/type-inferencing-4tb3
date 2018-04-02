@@ -139,7 +139,7 @@ instance Show Type where
 
 Here are examples.
 
-\begin{itemize}
+\begin{enumerate}
 
 \item A literal `5' with type Int.
 \begin{code}
@@ -199,18 +199,24 @@ example8 = Application example7 (IntLiteral 5 Unknown) Unknown
 test8 = infer M.empty example8
 \end{code}
 
-\item
+\item The function here has the type \texttt{Unknown -> Unknown}.
+Since we are not yet supporting type variables, 
+this result does not tell us that the two \texttt{Unknown}'s 
+are the same, so further type inferencing in the next step 
+will not tell us that the result of the application is an 
+\texttt{Int}.
 \begin{code}
 example9 = EFunc "x" (Var "x" Unknown) Unknown
 test9 = infer M.empty example9
 \end{code}
 
-\item
+
+\item 
 \begin{code}
 example10 = Application example9 (IntLiteral 10 Unknown) Unknown
 \end{code}
 
-\end{itemize}
+\end{enumerate}
 
 This is inference with \M
 
