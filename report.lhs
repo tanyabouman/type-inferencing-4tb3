@@ -62,7 +62,7 @@ is the exact inverse of Algorithm W. Types are inferred from the top of the synt
 Because Algorithm W is the more popular and more commonly used algorithm, we decided to work with Algorithm M. To do our work, we
 have created a toy language, and rules for that language, that demonstrate type inferencing and Algorithm M.
 
-\subsection{Evalutation Rules}
+\subsection{Evaluation Rules}
 
 \subsection{Our Toy Language}
 Let's assume that a parser has already produced a syntax tree, of type
