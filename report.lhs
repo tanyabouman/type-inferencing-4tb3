@@ -58,8 +58,13 @@ This means that if a syntax tree were built from a piece of code, types would be
 is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down.
 
 
-\section{Our Toy Language}
+\section{Our Work}
+Because Algorithm W is the more popular and more commonly used algorithm, we decided to work with Algorithm M. To do our work, we
+have created a toy language, and rules for that language, that demonstrate type inferencing and Algorithm M.
 
+\subsection{Evalutation Rules}
+
+\subsection{Our Toy Language}
 Let's assume that a parser has already produced a syntax tree, of type
 \texttt{Expression}, as given below.
 The \texttt{Type} that is given from the parser is the type given in the
