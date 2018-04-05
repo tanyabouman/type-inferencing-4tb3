@@ -62,16 +62,27 @@ is the exact inverse of Algorithm W. Types are inferred from the top of the synt
 Because Algorithm W is the more popular and more commonly used algorithm, we decided to work with Algorithm M. To do our work, we
 have created a toy language, and rules for that language, that demonstrate type inferencing and Algorithm M.
 
-\subsection{Evaluation Rules}
-
 \subsection{Our Toy Language}
+
+The toy language for the purpose of this project is a
+small portion of Haskell, allowing only the types
+\texttt{Int}, \texttt{Bool}, \texttt{String} and functions
+on those types.  Later on in this report, we extend
+the language to also include type variables, but these
+are not constrained by type classes.
+
+\subsection{Type Inferencing Rules}
+
+
+
+
+\subsection{Inferencing}
+
 Let's assume that a parser has already produced a syntax tree, of type
 \texttt{Expression}, as given below.
 The \texttt{Type} that is given from the parser is the type given in the
 annotation.  The annotation might or might not be correct. The type
 inferencing algorithm will detect that.
-
-
 
 \input{BasicInference.lhs}
 

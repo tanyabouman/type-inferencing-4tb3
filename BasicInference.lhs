@@ -71,8 +71,8 @@ instance Show Type where
 
 
 % as we explain how the algorithm works, make the code
-\section{Code}
-
+\section{Basic Type Inference}
+%FIXME: show the examples after the inference algorithm
 Here are examples.
 
 \begin{enumerate}
