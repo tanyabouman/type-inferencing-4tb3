@@ -100,6 +100,64 @@ instance Show Type where
   show (TFunc t1 t2) = show t1 ++ " -> " ++ show t2
 \end{code}
 
+Now, we continue on again with \texttt{unify}
+and \texttt{infer}.  This time \texttt{unify}
+is much more interesting, because it has to
+deal with type variables.  Only the added cases
+for type variables are shown.
+
+\begin{code}
+unify :: Type -> Type -> Maybe Type
+\end{code}
+
+\begin{comment}
+\begin{code}
+unify Unknown t = Just t
+unify t Unknown = Just t
+unify (TFunc a b) (TFunc c d) =
+  TFunc <$> (unify a c) <*> (unify b d)
+\end{code}
+\end{comment}
+
+
+% FIXME: sort this out after the inference algorithm
+\begin{code}
+
+
+\end{code}
+
+Since inference on a variable could get more
+information about that variable than was already
+known in the environment, we also now need to
+return an updated environment.
+The inference cases for literals are the same
+as the previous ones.
+\begin{comment}
+\begin{code}
+type TypeEnv = M.Map String Type
+
+infer :: TypeEnv -> Expression -> (Type, TypeEnv)
+infer env e@(IntLiteral i typ) =
+  case unify TInteger typ of
+    Nothing -> error $ "Type mismatch: literal " ++ show i
+               ++ " cannot have type " ++ show typ
+    Just i -> (i, env)
+infer env e@(BoolLiteral b typ) =
+  case unify TBool typ of
+    Nothing -> error $ "Type mismatch: literal " ++ show b
+               ++ " cannot have type " ++ show typ
+    Just b -> (b, env)
+infer env e@(StringLiteral s typ) =
+  case unify TString typ of
+    Nothing -> error $ "Type mismatch: literal " ++ show s
+               ++ " cannot have type " ++ show typ
+    Just s -> (s, env)
+\end{code}
+\end{comment}
+\begin{code}
+
+\end{code}
+
 % let-polymorphic is something that you might come across in reading
 % it's only really relevent when polymorphism is available
 % (e.g.) f :: a -> a, where a could be any type

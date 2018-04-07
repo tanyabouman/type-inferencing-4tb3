@@ -15,7 +15,7 @@ ExecSummary.pdf: ExecSummary.lhs
 ExecSummary.tex: ExecSummary.lhs
 	lhs2TeX ExecSummary.lhs > ExecSummary.tex
 
-report.pdf: report.lhs
+report.pdf: report.lhs BasicInference.lhs TypeVariables.lhs
 	pdflatex report.lhs
 	bibtex report
 	pdflatex report.lhs

@@ -39,6 +39,7 @@ ashworel, boumante, fiberet}
 \date{April 9, 2018}
 
 \begin{document}
+\linespread{1.25} % for 1.5 spacing
 
 \maketitle
 
