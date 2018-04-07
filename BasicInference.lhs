@@ -4,27 +4,7 @@
 import qualified Data.Map as M
 \end{code}
 
-Here is the code which runs the examples given below.
-It prints out each example and then the type of the
-entire example.
 
-\begin{code}
-examples =
-  [ example1, example2, example3
-  , example4, example5, example6
-  , example7, example8, example9]
-
-
--- FIXME: this should be prettier
-main :: IO ()
-main = do
-  -- sequence $ map print examples
-  putStrLn "Example 1:"
-  print example1
-  putStrLn "Test 1:"
-  print test1
-
-\end{code}
 \end{comment}
 
 %FIXME: should the type be included in these data types?
@@ -94,88 +74,7 @@ instance Show Type where
 
 % as we explain how the algorithm works, make the code
 \section{Basic Type Inference}
-%FIXME: show the examples after the inference algorithm
-Here are examples.
 
-\begin{enumerate}
-
-\item A literal `5' with type Int.
-\begin{code}
-example1 = IntLiteral 5 TInteger
-test1 = infer M.empty example1
-\end{code}
-Unsurprisingly, this returns the type \texttt{TInteger}, since both the
-value of the literal and the type signature of the literal indicate
-that it is an integer.
-
-\item This, on the other hand, produces an error, because the value
-`5' cannot have type \texttt{TBool}.
-\begin{code}
-example2 = IntLiteral 5 TBool
-test2 = infer M.empty example2
-\end{code}
-
-\item Now we move beyond checking whether or not the type signature is
-correct, to infering a type when the signature is missing.
-
-\begin{code}
-example3 = IntLiteral 5 Unknown
-test3 = infer M.empty example3
-\end{code}
-
-\item
-
-\begin{code}
-example4 = BoolLiteral True Unknown
-test4 = infer M.empty example4
-\end{code}
-
-\item
-
-\begin{code}
-example5 = StringLiteral "Hello world" Unknown
-test5 = infer M.empty example5
-\end{code}
-
-\item
-
-\begin{code}
-example6 = StringLiteral "Hi there" TBool
-test6 = infer M.empty example6
-\end{code}
-
-\item
-\begin{code}
-example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
-test7 = infer M.empty example7
-\end{code}
-
-
-\item
-\begin{code}
-example8 = Application example7 (IntLiteral 5 Unknown) Unknown
-test8 = infer M.empty example8
-\end{code}
-
-
-\item The function here has the type \texttt{Unknown -> Unknown}.
-Since we are not yet supporting type variables,
-this result does not tell us that the two \texttt{Unknown}'s
-are the same, so further type inferencing in the next step
-will not tell us that the result of the application is an
-\texttt{Int}.
-\begin{code}
-example9 = EFunc "x" (Var "x" Unknown) Unknown
-test9 = infer M.empty example9
-\end{code}
-
-
-\item
-\begin{code}
-example10 = Application example9 (IntLiteral 10 Unknown) Unknown
-\end{code}
-
-\end{enumerate}
 
 This is inference with \M
 
@@ -274,9 +173,114 @@ infer env e@(Application e1 e2 typ) =
 
 
 \end{code}
-% let-polymorphic is something that you might come across in reading
-% it's only really relevent when polymorphism is available
-% (e.g.) f :: a -> a, where a could be any type
-% this is not the case in our toy language, so don't worry about it for now
-% if there's time later, we'll get to this
+
+
+
+
+
+
+
+\begin{comment}
+Here is the code which runs the examples given below.
+It prints out each example and then the type of the
+entire example.
+
+\begin{code}
+main :: IO ()
+main = do
+\end{code}
+\end{comment}
+
+Here are examples.
+
+\begin{enumerate}
+
+\item A literal `5' with type Int.
+
+\begin{code}
+  let example1 = IntLiteral 5 TInteger
+  let test1 = infer M.empty example1
+\end{code}
+Unsurprisingly, this returns the type \texttt{TInteger}, since both the
+value of the literal and the type signature of the literal indicate
+that it is an integer.
+\begin{comment}
+\begin{code}
+  putStr "Example 1:  "
+  print example1
+  putStr "Type:       "
+  print test1
+\end{code}
+\end{comment}
+
+\item This, on the other hand, produces an error, because the value
+`5' cannot have type \texttt{TBool}.
+\begin{code}
+example2 = IntLiteral 5 TBool
+test2 = infer M.empty example2
+\end{code}
+
+\item Now we move beyond checking whether or not the type signature is
+correct, to infering a type when the signature is missing.
+
+\begin{code}
+example3 = IntLiteral 5 Unknown
+test3 = infer M.empty example3
+\end{code}
+
+\item
+
+\begin{code}
+example4 = BoolLiteral True Unknown
+test4 = infer M.empty example4
+\end{code}
+
+\item
+
+\begin{code}
+example5 = StringLiteral "Hello world" Unknown
+test5 = infer M.empty example5
+\end{code}
+
+\item
+
+\begin{code}
+example6 = StringLiteral "Hi there" TBool
+test6 = infer M.empty example6
+\end{code}
+
+\item
+\begin{code}
+example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
+test7 = infer M.empty example7
+\end{code}
+
+
+\item
+\begin{code}
+example8 = Application example7 (IntLiteral 5 Unknown) Unknown
+test8 = infer M.empty example8
+\end{code}
+
+
+\item The function here has the type \texttt{Unknown -> Unknown}.
+Since we are not yet supporting type variables,
+this result does not tell us that the two \texttt{Unknown}'s
+are the same, so further type inferencing in the next step
+will not tell us that the result of the application is an
+\texttt{Int}.
+\begin{code}
+example9 = EFunc "x" (Var "x" Unknown) Unknown
+test9 = infer M.empty example9
+\end{code}
+
+
+\item
+\begin{code}
+example10 = Application example9 (IntLiteral 10 Unknown) Unknown
+\end{code}
+
+\end{enumerate}
+
+
 
