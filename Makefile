@@ -1,7 +1,10 @@
 all: ExecSummary.pdf
 
-ExecSummary: ExecSummary.lhs
-	ghc --make ExecSummary.lhs
+BasicInference: BasicInference.lhs
+	ghc --make BasicInference.lhs
+
+TypeVariables: TypeVariables.lhs
+	ghc --make TypeVariables.lhs
 
 ExecSummary.pdf: ExecSummary.lhs
 	pdflatex ExecSummary.lhs

@@ -3,6 +3,28 @@
 \begin{code}
 import qualified Data.Map as M
 \end{code}
+
+Here is the code which runs the examples given below.
+It prints out each example and then the type of the
+entire example.
+
+\begin{code}
+examples =
+  [ example1, example2, example3
+  , example4, example5, example6
+  , example7, example8, example9]
+
+
+-- FIXME: this should be prettier
+main :: IO ()
+main = do
+  -- sequence $ map print examples
+  putStrLn "Example 1:"
+  print example1
+  putStrLn "Test 1:"
+  print test1
+
+\end{code}
 \end{comment}
 
 %FIXME: should the type be included in these data types?
@@ -30,7 +52,7 @@ data Expression = Var String Type
 \end{code}
 Pretty printing the language is necessary in order to give proper errors that
 relate back to the actual code.
-% is there a benefit to separating pretty from show?
+% is there a benefit to separating pretty from show? does this really need to be included in the report
 \begin{code}
 instance Show Expression where
   show (IntLiteral int typ) =
