@@ -3,20 +3,6 @@
 import qualified Data.Map as M
 \end{code}
 
-Here is the code which runs the examples given below.
-It prints out each example and then the type of the
-entire example.
-
-
-\begin{code}
-main :: IO ()
-main = do 
-  putStrLn "Nothing yet."
-\end{code}
-\end{comment}
-
-Here are examples.
-
 \section{Inference with Type Variables}
 
 In order to inference with type variables,
@@ -126,10 +112,10 @@ unify (TFunc a b) (TFunc c d) =
 
 The only case that changes for \texttt{infer} is the
 function case, because there is now the option of
-giving the type \texttt{a -> a} to a function.  It
+giving the type \texttt{a -> a} to a function. It
 is not possible to use type variables for variable
 expressions, since the type of a variable must be
-defined somewhere by a literal.
+determined somewhere by a literal.
 The inference cases for literals are the same
 as the previous ones.
 \begin{comment}
@@ -152,10 +138,7 @@ infer env e@(StringLiteral s typ) =
     Nothing -> Left $ "Type mismatch: literal " ++ show s
                ++ " cannot have type " ++ show typ
     Just s -> Right s
-\end{code}
-\end{comment}
 
-\begin{code}
 infer env e@(Var v typ) =
   case M.lookup v env of
     Nothing -> Left ("Variable not in scope: " ++ show e)
@@ -164,6 +147,65 @@ infer env e@(Var v typ) =
         Nothing -> Left ("Type mismatch: " ++ show e)
         Just s -> Right s
 \end{code}
+\end{comment}
+
+
+\begin{code}
+infer env e@(EFunc v exp typ) =
+  case unify typ (TFunc (TVar "a") (TVar "b")) of
+    Nothing -> Left ("Not a function: " ++ show e)
+    Just (TFunc fin fout) ->
+      TFunc fin <$> (infer (M.insert v fin env) exp)
+
+\end{code}
+
+
+
+Here is the code which runs the examples given below.
+It prints out each example and then the type of the
+entire example.
+
+\begin{comment}
+\begin{code}
+main :: IO ()
+main = do
+\end{code}
+\end{comment}
+
+Here are examples.
+\begin{enumerate}
+\item
+\begin{code}
+  let example15 = EFunc "x" (Var "x" Unknown) Unknown
+  let test15 = infer M.empty example15
+\end{code}
+
+\begin{comment}
+\begin{code}
+  putStr "Example 15:  "
+  print example15
+  putStr "Type:        "
+  print test15
+\end{code}
+\end{comment}
+
+
+\item
+\begin{code}
+  let example16 = EFunc "x" (IntLiteral 5 Unknown) Unknown
+  let test16 = infer M.empty example16
+\end{code}
+\end{enumerate}
+
+\begin{comment}
+\begin{code}
+  putStr "Example 16:  "
+  print example16
+  putStr "Type:        "
+  print test16
+\end{code}
+\end{comment}
+
 
 % let-polymorphic is something that you might come across in reading
 % it's only really relevent when polymorphism is available
