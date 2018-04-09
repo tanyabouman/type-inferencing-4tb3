@@ -270,7 +270,7 @@ We can see that it have as the type Bool which is the correct type for the liter
   let example5 = StringLiteral "Hello world" Unknown
   let test5 = infer M.empty example5
 \end{code}
-We can see that it have as the type String which is the correct type for the String literal Hello World
+Here we see that it have as the type String which is the correct type for the String literal Hello World
 \begin{comment}
 \begin{code}
   putStr "Example 5:  "
@@ -283,22 +283,50 @@ We can see that it have as the type String which is the correct type for the Str
 \item
 
 \begin{code}
-example6 = StringLiteral "Hi there" TBool
-test6 = infer M.empty example6
+  let example6 = StringLiteral "Hi there" TBool
+  let test6 = infer M.empty example6
 \end{code}
+As expected this would produce an error because we have a string literal with type Bool.
+\begin{comment}
+\begin{code}
+  putStr "Example 6:  "
+  print example6
+  putStr "Type:       "
+  print test6
+\end{code}
+\end{comment}
+
 
 \item
 \begin{code}
-example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
-test7 = infer M.empty example7
+  let example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
+  let test7 = infer M.empty example7
 \end{code}
+\begin{comment}
+\begin{code}
+  putStr "Example 7:  "
+  print example7
+  putStr "Type:       "
+  print test7
+\end{code}
+\end{comment}
+
 
 
 \item
 \begin{code}
-example8 = Application example7 (IntLiteral 5 Unknown) Unknown
-test8 = infer M.empty example8
+  let example8 = Application example7 (IntLiteral 5 Unknown) Unknown
+  let test8 = infer M.empty example8
 \end{code}
+\begin{comment}
+\begin{code}
+  putStr "Example 8:  "
+  print example8
+  putStr "Type:       "
+  print test8
+\end{code}
+\end{comment}
+
 
 
 \item The function here has the type \texttt{Unknown -> Unknown}.
