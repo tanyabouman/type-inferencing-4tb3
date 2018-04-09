@@ -233,7 +233,7 @@ This, on the other hand, produces an error, because the value
 
 \item Now we move beyond checking whether or not the type signature is
 correct, to inferring a type when the signature is missing. Lets check with a
-literal 5 with type Unknown
+literal 5 and type Unknown
 \begin{code}
   let example3 = IntLiteral 5 Unknown
   let test3 = infer M.empty example3
@@ -249,18 +249,36 @@ We can see that it have as the type Int which is the correct type for the litera
 \end{comment}
 
 \item
-
+Also, lets infer a type with literal True and type Unknown
 \begin{code}
-example4 = BoolLiteral True Unknown
-test4 = infer M.empty example4
+  let example4 = BoolLiteral True Unknown
+  let test4 = infer M.empty example4
 \end{code}
+We can see that it have as the type Bool which is the correct type for the literal True
+\begin{comment}
+\begin{code}
+  putStr "Example 4:  "
+  print example4
+  putStr "Type:       "
+  print test4
+\end{code}
+\end{comment}
 
 \item
 
 \begin{code}
-example5 = StringLiteral "Hello world" Unknown
-test5 = infer M.empty example5
+  let example5 = StringLiteral "Hello world" Unknown
+  let test5 = infer M.empty example5
 \end{code}
+We can see that it have as the type String which is the correct type for the String literal Hello World
+\begin{comment}
+\begin{code}
+  putStr "Example 5:  "
+  print example5
+  putStr "Type:       "
+  print test5
+\end{code}
+\end{comment}
 
 \item
 
