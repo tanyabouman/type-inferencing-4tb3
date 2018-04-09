@@ -7,18 +7,15 @@ Here is the code which runs the examples given below.
 It prints out each example and then the type of the
 entire example.
 
+
 \begin{code}
-examples =
-  [ ]
-
-
--- FIXME: this should be prettier
 main :: IO ()
-main = do
-  -- sequence $ map print examples
+main = do 
   putStrLn "Nothing yet."
 \end{code}
 \end{comment}
+
+Here are examples.
 
 \section{Inference with Type Variables}
 
@@ -116,6 +113,7 @@ unify Unknown t = Just t
 unify t Unknown = Just t
 unify (TFunc a b) (TFunc c d) =
   TFunc <$> (unify a c) <*> (unify b d)
+
 \end{code}
 \end{comment}
 
@@ -126,36 +124,45 @@ unify (TFunc a b) (TFunc c d) =
 
 \end{code}
 
-Since inference on a variable could get more
-information about that variable than was already
-known in the environment, we also now need to
-return an updated environment.
+The only case that changes for \texttt{infer} is the
+function case, because there is now the option of
+giving the type \texttt{a -> a} to a function.  It
+is not possible to use type variables for variable
+expressions, since the type of a variable must be
+defined somewhere by a literal.
 The inference cases for literals are the same
 as the previous ones.
 \begin{comment}
 \begin{code}
 type TypeEnv = M.Map String Type
 
-infer :: TypeEnv -> Expression -> (Type, TypeEnv)
+infer :: TypeEnv -> Expression -> Either String Type
 infer env e@(IntLiteral i typ) =
   case unify TInteger typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show i
+    Nothing -> Left $ "Type mismatch: literal " ++ show i
                ++ " cannot have type " ++ show typ
-    Just i -> (i, env)
+    Just i -> Right i
 infer env e@(BoolLiteral b typ) =
   case unify TBool typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show b
+    Nothing -> Left $ "Type mismatch: literal " ++ show b
                ++ " cannot have type " ++ show typ
-    Just b -> (b, env)
+    Just b -> Right b
 infer env e@(StringLiteral s typ) =
   case unify TString typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show s
+    Nothing -> Left $ "Type mismatch: literal " ++ show s
                ++ " cannot have type " ++ show typ
-    Just s -> (s, env)
+    Just s -> Right s
 \end{code}
 \end{comment}
-\begin{code}
 
+\begin{code}
+infer env e@(Var v typ) =
+  case M.lookup v env of
+    Nothing -> Left ("Variable not in scope: " ++ show e)
+    Just t ->
+      case unify t typ of
+        Nothing -> Left ("Type mismatch: " ++ show e)
+        Just s -> Right s
 \end{code}
 
 % let-polymorphic is something that you might come across in reading
