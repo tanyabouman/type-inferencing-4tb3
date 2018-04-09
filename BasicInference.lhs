@@ -2,6 +2,7 @@
 \begin{comment}
 \begin{code}
 import qualified Data.Map as M
+import Data.Either
 \end{code}
 
 
@@ -105,23 +106,24 @@ Otherwise there is an error.
 \begin{code}
 type TypeEnv = M.Map String Type
 
-infer :: TypeEnv -> Expression -> Type
-infer _ e@(IntLiteral i typ) =
+infer :: TypeEnv -> Expression -> Either String Type
+infer env e@(IntLiteral i typ) =
   case unify TInteger typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show i
+    Nothing -> Left $ "Type mismatch: literal " ++ show i
                ++ " cannot have type " ++ show typ
-    Just i -> i
-infer _ e@(BoolLiteral b typ) =
+    Just i -> Right i
+infer env e@(BoolLiteral b typ) =
   case unify TBool typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show b
+    Nothing -> Left $ "Type mismatch: literal " ++ show b
                ++ " cannot have type " ++ show typ
-    Just b -> b
-infer _ e@(StringLiteral s typ) =
+    Just b -> Right b
+infer env e@(StringLiteral s typ) =
   case unify TString typ of
-    Nothing -> error $ "Type mismatch: literal " ++ show s
+    Nothing -> Left $ "Type mismatch: literal " ++ show s
                ++ " cannot have type " ++ show typ
-    Just s -> s
+    Just s -> Right s
 \end{code}
+
 
 Next we move on to the variable case.
 If the variable is defined and the type matches the current expected type,
@@ -131,11 +133,11 @@ error.
 \begin{code}
 infer env e@(Var v typ) =
   case M.lookup v env of
-    Nothing -> error ("Variable not in scope: " ++ show e)
+    Nothing -> Left ("Variable not in scope: " ++ show e)
     Just t ->
       case unify t typ of
-        Nothing -> error ("Type mismatch: " ++ show e)
-        Just s -> s
+        Nothing -> Left ("Type mismatch: " ++ show e)
+        Just s -> Right s
 \end{code}
 
 Inferencing on functions is more interesting because the argument of the
@@ -145,8 +147,8 @@ function.
 \begin{code}
 infer env e@(EFunc v exp typ) =
   case unify typ (TFunc Unknown Unknown) of
-    Nothing -> error ("Type mismatch: " ++ show e)
-    Just (TFunc fin fout) -> TFunc fin (infer (M.insert v fin env) exp)
+    Nothing -> Left $ error ("Type mismatch: " ++ show e)
+    Just (TFunc fin fout) ->  TFunc fin <$> (infer (M.insert v fin env) exp)
 \end{code}
 
 
@@ -155,8 +157,8 @@ infer env e@(EFunc v exp typ) =
 infer env e@(Application e1 e2 typ) =
   let
     -- infer the type of e1
-    e1type = infer env e1
-    e2type = infer env e2
+    e1type = fromRight Unknown (infer env e1)
+    e2type = fromRight Unknown (infer env e2)
   in
     -- unify that with what the output of the function should be
     case unify e1type (TFunc Unknown typ) of
@@ -166,7 +168,7 @@ infer env e@(Application e1 e2 typ) =
           Just t ->
             -- match the return type with the overall type
             case unify fout typ of
-              Just s -> s
+              Just s -> Right s
               Nothing -> error $ "Could not match: " ++ show fout ++ " and " ++ show typ
           Nothing -> error $ "Could not match: " ++ show e2type ++ " and " ++ show fin
       _ -> error $ "Could not match: " ++ show e1type ++ " and " ++ show typ
@@ -230,12 +232,21 @@ This, on the other hand, produces an error, because the value
 \end{comment}
 
 \item Now we move beyond checking whether or not the type signature is
-correct, to infering a type when the signature is missing.
-
+correct, to inferring a type when the signature is missing. Lets check with a
+literal 5 with type Unknown
 \begin{code}
-example3 = IntLiteral 5 Unknown
-test3 = infer M.empty example3
+  let example3 = IntLiteral 5 Unknown
+  let test3 = infer M.empty example3
 \end{code}
+We can see that it have as the type Int which is the correct type for the literal 5
+\begin{comment}
+\begin{code}
+  putStr "Example 3:  "
+  print example3
+  putStr "Type:       "
+  print test3
+\end{code}
+\end{comment}
 
 \item
 
