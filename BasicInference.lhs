@@ -213,12 +213,21 @@ that it is an integer.
 \end{code}
 \end{comment}
 
-\item This, on the other hand, produces an error, because the value
-`5' cannot have type \texttt{TBool}.
+\item A literal 5 with type Bool.
 \begin{code}
-example2 = IntLiteral 5 TBool
-test2 = infer M.empty example2
+  let example2 = IntLiteral 5 TBool
+  let test2 = infer M.empty example2
 \end{code}
+This, on the other hand, produces an error, because the value
+`5' cannot have type \texttt{TBool}.
+\begin{comment}
+\begin{code}
+  putStr "Example 2:  "
+  print example2
+  putStr "Type:       "
+  print test2
+\end{code}
+\end{comment}
 
 \item Now we move beyond checking whether or not the type signature is
 correct, to infering a type when the signature is missing.
