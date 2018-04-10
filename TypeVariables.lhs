@@ -90,16 +90,19 @@ deal with type variables.  Only the added cases
 for type variables are shown.
 
 \begin{code}
-unify :: Type -> Type -> Maybe Type
+unify :: Type -> Type -> Either String Type
 \end{code}
 
 \begin{comment}
 \begin{code}
-unify Unknown t = Just t
-unify t Unknown = Just t
+unify (TVar s) t = Right t
+unify t (TVar s) = Right t
 unify (TFunc a b) (TFunc c d) =
   TFunc <$> (unify a c) <*> (unify b d)
-
+unify s t =
+  if s == t
+  then Right s
+  else Left $ "Error: could not match type " ++ show s ++ " with " ++ show t 
 \end{code}
 \end{comment}
 
@@ -123,40 +126,25 @@ as the previous ones.
 type TypeEnv = M.Map String Type
 
 infer :: TypeEnv -> Expression -> Either String Type
-infer env e@(IntLiteral i typ) =
-  case unify TInteger typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show i
-               ++ " cannot have type " ++ show typ
-    Just i -> Right i
-infer env e@(BoolLiteral b typ) =
-  case unify TBool typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show b
-               ++ " cannot have type " ++ show typ
-    Just b -> Right b
-infer env e@(StringLiteral s typ) =
-  case unify TString typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show s
-               ++ " cannot have type " ++ show typ
-    Just s -> Right s
-
+infer env e@(IntLiteral i typ) = unify TInteger typ
+infer env e@(BoolLiteral b typ) = unify TBool typ
+infer env e@(StringLiteral s typ) = unify TString typ
+-- NOTE: include in Basic Inference that the parser
+-- would already have caught this error
 infer env e@(Var v typ) =
   case M.lookup v env of
     Nothing -> Left ("Variable not in scope: " ++ show e)
-    Just t ->
-      case unify t typ of
-        Nothing -> Left ("Type mismatch: " ++ show e)
-        Just s -> Right s
+    Just t -> unify t typ
 \end{code}
 \end{comment}
 
 
 \begin{code}
-infer env e@(EFunc v exp typ) =
+infer env e@(EFunc v exp typ) = 
   case unify typ (TFunc (TVar "a") (TVar "b")) of
-    Nothing -> Left ("Not a function: " ++ show e)
-    Just (TFunc fin fout) ->
+    Right (TFunc fin fout) ->
       TFunc fin <$> (infer (M.insert v fin env) exp)
-
+    _ -> Left $ "Not a function: " ++ show e
 \end{code}
 
 
@@ -169,6 +157,12 @@ entire example.
 \begin{code}
 main :: IO ()
 main = do
+  let example2 = IntLiteral 5 TBool
+  let test2 = infer M.empty example2
+  putStr "Example 2:  "
+  print example2
+  putStr "Type:       "
+  print test2
 \end{code}
 \end{comment}
 
@@ -195,7 +189,7 @@ Here are examples.
   let example16 = EFunc "x" (IntLiteral 5 Unknown) Unknown
   let test16 = infer M.empty example16
 \end{code}
-\end{enumerate}
+
 
 \begin{comment}
 \begin{code}
@@ -205,6 +199,9 @@ Here are examples.
   print test16
 \end{code}
 \end{comment}
+
+
+\end{enumerate}
 
 
 % let-polymorphic is something that you might come across in reading
