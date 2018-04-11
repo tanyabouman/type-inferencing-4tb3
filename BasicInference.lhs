@@ -210,7 +210,7 @@ that it is an integer.
 \end{code}
 \end{comment}
 
-\item A literal 5 with type Bool.
+\item A literal '5' with type Bool.
 \begin{code}
   let example2 = IntLiteral 5 TBool
   let test2 = infer M.empty example2
@@ -228,12 +228,12 @@ This, on the other hand, produces an error, because the value
 
 \item Now we move beyond checking whether or not the type signature is
 correct, to inferring a type when the signature is missing. Lets check with a
-literal 5 and type Unknown
+literal '5' and type Unknown
 \begin{code}
   let example3 = IntLiteral 5 Unknown
   let test3 = infer M.empty example3
 \end{code}
-We can see that it have as the type Int which is the correct type for the literal 5
+It produces the type TInteger which is the correct type for the literal 5
 \begin{comment}
 \begin{code}
   putStr "Example 3:  "
@@ -244,12 +244,12 @@ We can see that it have as the type Int which is the correct type for the litera
 \end{comment}
 
 \item
-Also, lets infer a type with literal True and type Unknown
+Also, let's consider inferring a type when we have a bool literal 'True' with type Unknown
 \begin{code}
   let example4 = BoolLiteral True Unknown
   let test4 = infer M.empty example4
 \end{code}
-We can see that it have as the type Bool which is the correct type for the literal True
+As before, here it produces the type TBool which is the correct type for the literal True
 \begin{comment}
 \begin{code}
   putStr "Example 4:  "
@@ -260,12 +260,12 @@ We can see that it have as the type Bool which is the correct type for the liter
 \end{comment}
 
 \item
-
+Lastly in inferring a type, we can consider when we have a String literal with type Unknown
 \begin{code}
   let example5 = StringLiteral "Hello world" Unknown
   let test5 = infer M.empty example5
 \end{code}
-Here we see that it have as the type String which is the correct type for the String literal Hello World
+It produces the type TString which is the correct type for the string literal 'Hello World'
 \begin{comment}
 \begin{code}
   putStr "Example 5:  "
@@ -276,12 +276,12 @@ Here we see that it have as the type String which is the correct type for the St
 \end{comment}
 
 \item
-
+A string literal 'Hi there' with type Bool
 \begin{code}
   let example6 = StringLiteral "Hi there" TBool
   let test6 = infer M.empty example6
 \end{code}
-As expected this would produce an error because we have a string literal with type Bool.
+As expected this would produce an error because we have a string literal which is of type TString instead of TBool
 \begin{comment}
 \begin{code}
   putStr "Example 6:  "
@@ -293,6 +293,7 @@ As expected this would produce an error because we have a string literal with ty
 
 
 \item
+A function with type Unkown
 \begin{code}
   let example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
   let test7 = infer M.empty example7
@@ -309,6 +310,7 @@ As expected this would produce an error because we have a string literal with ty
 
 
 \item
+A function application with type Unknown
 \begin{code}
   let example8 = Application example7 (IntLiteral 5 Unknown) Unknown
   let test8 = infer M.empty example8

@@ -1,0 +1,11 @@
+
+.DS_Store
+BasicInference
+*.hi
+*.o
+ExecSummary.aux
+*.bbl
+*.blg
+*.log
+report.aux
+report.out
