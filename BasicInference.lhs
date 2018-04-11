@@ -147,28 +147,6 @@ infer env e@(Application e1 e2 typ) = do
   (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
   inType <- unify e2type fin
   unify typ fout
-
-
-{-
-  let
-    -- infer the type of e1
-    e1type = fromRight Unknown (infer env e1)
-    e2type = fromRight Unknown (infer env e2)
-  in
-    -- unify that with what the output of the function should be
-    case unify e1type (TFunc Unknown typ) of
-      Just (TFunc fin fout) ->
-        -- match the input type with the argument
-        case unify e2type fin of
-          Just t ->
-            -- match the return type with the overall type
-            case unify fout typ of
-              Just s -> Right s
-              Nothing -> error $ "Could not match: " ++ show fout ++ " and " ++ show typ
-          Nothing -> error $ "Could not match: " ++ show e2type ++ " and " ++ show fin
-      _ -> error $ "Could not match: " ++ show e1type ++ " and " ++ show typ
--}
-
 \end{code}
 
 

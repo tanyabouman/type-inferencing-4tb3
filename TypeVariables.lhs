@@ -95,6 +95,8 @@ unify :: Type -> Type -> Either String Type
 
 \begin{comment}
 \begin{code}
+unify Unknown t = Right t
+unify t Unknown = Right t
 unify (TVar s) t = Right t
 unify t (TVar s) = Right t
 unify (TFunc a b) (TFunc c d) =
@@ -114,37 +116,72 @@ unify s t =
 \end{code}
 
 The only case that changes for \texttt{infer} is the
-function case, because there is now the option of
+function case and the application, because there is now the option of
 giving the type \texttt{a -> a} to a function. It
-is not possible to use type variables for variable
+is not necessary to consider type variables for variable
 expressions, since the type of a variable must be
 determined somewhere by a literal.
 The inference cases for literals are the same
 as the previous ones.
+
+Additionally, the type environment now much include
+infomation about type variables.  Type variables are
+only defined within the context of a specific funcion,
+not for the entire program.
+\begin{code}
+data TypeEnv = TypeEnv (M.Map String Type) (M.Map String Type)
+\end{code}
+
 \begin{comment}
 \begin{code}
-type TypeEnv = M.Map String Type
 
 infer :: TypeEnv -> Expression -> Either String Type
 infer env e@(IntLiteral i typ) = unify TInteger typ
 infer env e@(BoolLiteral b typ) = unify TBool typ
 infer env e@(StringLiteral s typ) = unify TString typ
--- NOTE: include in Basic Inference that the parser
--- would already have caught this error
-infer env e@(Var v typ) =
+infer (TypeEnv env _) e@(Var v typ) =
   case M.lookup v env of
     Nothing -> Left ("Variable not in scope: " ++ show e)
     Just t -> unify t typ
 \end{code}
 \end{comment}
 
-
+To infer the type of a function, we get available type variables
+and assign those to the argument and output of the function.
+After unification, those types might still be variables,
+or they might be a specific type.  Otherwise the inference continues
+in the same manner as before.
 \begin{code}
-infer env e@(EFunc v exp typ) = 
-  case unify typ (TFunc (TVar "a") (TVar "b")) of
+infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =  -- first get a fresh type variable
+  let
+    nextVar :: String -> String
+    nextVar (v:vs) =
+      case M.lookup (v:vs) vars of
+        Nothing -> v:vs
+        _ -> nextVar ((succ v):vs)
+    var1 = nextVar "a"
+    var2 = nextVar var1
+  in
+  case unify typ (TFunc (TVar var1) (TVar var2)) of
     Right (TFunc fin fout) ->
-      TFunc fin <$> (infer (M.insert v fin env) exp)
+      let
+        newVars = M.insert var1 fin $ M.insert var2 fout vars
+        newTypes = M.insert v fin typs
+      in
+      TFunc fin <$> (infer (TypeEnv newTypes newVars) exp)
     _ -> Left $ "Not a function: " ++ show e
+\end{code}
+
+Similarly, for the application of a function, the argument to the
+function might indicate a more specific type to the output, so
+we keep track of that in the type variable environment.
+\begin{code}
+infer env@(TypeEnv vs tvars) e@(Application e1 e2 typ) = do
+  e1type <- infer env e1
+  (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
+  e2type <- infer env e2
+  inType <- unify e2type fin
+  unify typ fout
 \end{code}
 
 
@@ -158,7 +195,7 @@ entire example.
 main :: IO ()
 main = do
   let example2 = IntLiteral 5 TBool
-  let test2 = infer M.empty example2
+  let test2 = infer (TypeEnv M.empty M.empty) example2
   putStr "Example 2:  "
   print example2
   putStr "Type:       "
@@ -171,7 +208,7 @@ Here are examples.
 \item
 \begin{code}
   let example15 = EFunc "x" (Var "x" Unknown) Unknown
-  let test15 = infer M.empty example15
+  let test15 = infer (TypeEnv M.empty M.empty) example15
 \end{code}
 
 \begin{comment}
@@ -187,7 +224,7 @@ Here are examples.
 \item
 \begin{code}
   let example16 = EFunc "x" (IntLiteral 5 Unknown) Unknown
-  let test16 = infer M.empty example16
+  let test16 = infer (TypeEnv M.empty M.empty) example16
 \end{code}
 
 
@@ -199,6 +236,30 @@ Here are examples.
   print test16
 \end{code}
 \end{comment}
+
+
+\item Making a function of two arguments in this toy language
+requires making a function which returns another function.  In
+this case, the function looks like:
+\begin{verbatim}
+(\x -> (\y -> x))
+\end{verbatim}
+in which \texttt{x} and \texttt{y} are both arguments.
+\begin{code}
+  let example17 = EFunc "x" (EFunc "y" (Var "x" Unknown) Unknown) Unknown
+  let test17 = infer (TypeEnv M.empty M.empty) example17
+\end{code}
+
+
+\begin{comment}
+\begin{code}
+  putStr "Example 17:  "
+  print example17
+  putStr "Type:        "
+  print test17
+\end{code}
+\end{comment}
+
 
 
 \end{enumerate}
