@@ -44,17 +44,16 @@ ashworel, boumante, fiberet}
 \maketitle
 
 \section{Introduction}
+Type inference can be defined as the compile-time process of reconstructing missing type information ina program based on the use of some of its variables.\cite{duggan_bent_1996}
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
-allow programmers to skip defining the types of variables,
-by doing type inferencing at compile time.
+allow programmers to skip defining the types of variables, by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
 the type of a variable, but these types are dynamic\cite{pythonsummary}, 
 and therefore not the topic of the currrent report.
 Languages that do type inferencing use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.
 
 \subsection{History}
-Algorithm W is standard algorithm, first done by ( somebody ), while Algorithm M was not formally presented 
-until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. Algorithm W is an algorithm that works bottom to top.
+Algorithm W is standard algorithm, proposed by MIlner\cite{algwstepbystep}, while Algorithm M was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. Algorithm W is an algorithm that works bottom to top.
 This means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom. Algorithm M
 is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down.
 
