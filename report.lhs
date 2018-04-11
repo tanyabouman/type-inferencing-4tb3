@@ -44,13 +44,14 @@ ashworel, boumante, fiberet}
 \maketitle
 
 \section{Introduction}
-Type inference can be defined as the compile-time process of reconstructing missing type information ina program based on the use of some of its variables.\cite{duggan_bent_1996}
+Type inferencing can be defined as the compile-time process of reconstructing missing type information in a program
+based on the use of some of its variables.\cite{duggan_bent_1996}
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables, by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
 the type of a variable, but these types are dynamic\cite{pythonsummary}, 
 and therefore not the topic of the currrent report.
-Languages that do type inferencing use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.
+Languages that use type inferencing use the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.
 
 \subsection{History}
 Algorithm W is standard algorithm, proposed by MIlner\cite{algwstepbystep}, while Algorithm M was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. Algorithm W is an algorithm that works bottom to top.
@@ -90,9 +91,12 @@ inferencing algorithm will detect that.
 
 % swift type inferencing description; maybe useful as a reference??? https://github.com/apple/swift/blob/master/docs/TypeChecker.rst
 
-\section{Discussion}
-
 \section{Conclusion}
+
+To conclude, type inferencing is a very interesting feature in the programming world. It uses Algorithms M
+or W to infer the types of variables when undeclared at compile time, thus enabling the programmer to be faster.
+Our example toy language shows how Algorithm M and the type inferencing system work. In the future, it would be 
+interesting to see if type inferencing could be applied across all languages.
 
 
 \bibliographystyle{ieeetr}
