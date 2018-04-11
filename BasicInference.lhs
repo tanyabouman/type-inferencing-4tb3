@@ -87,15 +87,15 @@ This is inference with \M
 This would be a more interesting function if there were type variables,
 but for now, it just checks that the two types match.
 \begin{code}
-unify :: Type -> Type -> Maybe Type
-unify Unknown t = Just t
-unify t Unknown = Just t
+unify :: Type -> Type -> Either String Type
+unify Unknown t = Right t
+unify t Unknown = Right t
 unify (TFunc a b) (TFunc c d) =
   TFunc <$> (unify a c) <*> (unify b d)
 unify s t =
   if s == t
-  then Just s
-  else Nothing
+  then Right s
+  else Left $ "Error: could not match type " ++ show s ++ " with " ++ show t
 \end{code}
 
 First we infer the types of constant literals.  These are quite simple.
@@ -107,21 +107,9 @@ Otherwise there is an error.
 type TypeEnv = M.Map String Type
 
 infer :: TypeEnv -> Expression -> Either String Type
-infer env e@(IntLiteral i typ) =
-  case unify TInteger typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show i
-               ++ " cannot have type " ++ show typ
-    Just i -> Right i
-infer env e@(BoolLiteral b typ) =
-  case unify TBool typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show b
-               ++ " cannot have type " ++ show typ
-    Just b -> Right b
-infer env e@(StringLiteral s typ) =
-  case unify TString typ of
-    Nothing -> Left $ "Type mismatch: literal " ++ show s
-               ++ " cannot have type " ++ show typ
-    Just s -> Right s
+infer env e@(IntLiteral i typ) = unify TInteger typ
+infer env e@(BoolLiteral b typ) = unify TBool typ
+infer env e@(StringLiteral s typ) = unify TString typ
 \end{code}
 
 
@@ -129,15 +117,13 @@ Next we move on to the variable case.
 If the variable is defined and the type matches the current expected type,
 then we return that matching type.
 If the variable is not defined or the type does not match, there is an
-error.
+error.  Note that the parser should have already found the error
+if the variable did not exist in the
 \begin{code}
 infer env e@(Var v typ) =
   case M.lookup v env of
     Nothing -> Left ("Variable not in scope: " ++ show e)
-    Just t ->
-      case unify t typ of
-        Nothing -> Left ("Type mismatch: " ++ show e)
-        Just s -> Right s
+    Just t -> unify t typ
 \end{code}
 
 Inferencing on functions is more interesting because the argument of the
@@ -147,14 +133,23 @@ function.
 \begin{code}
 infer env e@(EFunc v exp typ) =
   case unify typ (TFunc Unknown Unknown) of
-    Nothing -> Left $ error ("Type mismatch: " ++ show e)
-    Just (TFunc fin fout) ->  TFunc fin <$> (infer (M.insert v fin env) exp)
+    Right (TFunc fin fout) -> 
+      TFunc fin <$> (infer (M.insert v fin env) exp)
+    _ -> Left $ "Not a function: " ++ show e
 \end{code}
 
 
 
 \begin{code}
-infer env e@(Application e1 e2 typ) =
+infer env e@(Application e1 e2 typ) = do
+  e1type <- infer env e1
+  e2type <- infer env e2
+  (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
+  inType <- unify e2type fin
+  unify typ fout
+
+
+{-
   let
     -- infer the type of e1
     e1type = fromRight Unknown (infer env e1)
@@ -172,7 +167,7 @@ infer env e@(Application e1 e2 typ) =
               Nothing -> error $ "Could not match: " ++ show fout ++ " and " ++ show typ
           Nothing -> error $ "Could not match: " ++ show e2type ++ " and " ++ show fin
       _ -> error $ "Could not match: " ++ show e1type ++ " and " ++ show typ
-
+-}
 
 \end{code}
 
