@@ -59,8 +59,8 @@ These algorithms are called the Hindely-Milner type inference algorithms were Al
 
 
 \section{Our Work}
-Because Algorithm W is the more popular and more commonly used algorithm, we decided to work with Algorithm M. To do our work, we
-have created a toy language, and rules for that language, that demonstrate type inferencing and Algorithm M.
+To do our work, we have created a toy language, and rules for that language, that demonstrate type inferencing with Algorithm M. We chose to use Algorithm M because Algorithm W is the more popular and more commonly used algorithm and also Algorithm M always finds type errors earlier by considering a less number of expressions than Algorithm W as proposed by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. 
+We would implement Algorithm  M with our toy language to demonstrate how type inferencing works in functional programming.
 
 \subsection{Our Toy Language}
 
