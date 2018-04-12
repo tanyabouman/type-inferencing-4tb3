@@ -135,11 +135,6 @@ however, often still contains \texttt{Unknown}'s.
 
 % swift type inferencing description; maybe useful as a reference??? https://github.com/apple/swift/blob/master/docs/TypeChecker.rst
 
-\section{Discussion}
-
-%  This section is reserved to provide commentary, observations or interesting findings 
-% about your work. Also, speak about anything that couldn’t be completed for whatever reason.
-
 
 \section{Conclusion}
 
