@@ -54,21 +54,22 @@ and therefore not the topic of the current report, since
 this report focusses on compile time type inferencing.
 The most common type of type inferencing that languages use is the
 Hindley-Milner type system, which has two main implementations,
-Algorithm W and Algorithm M.
+Algorithm \W and Algorithm \M.
 
 \subsection{History}
-The original type inference algorithm was invented by Haskell Curry and Robert Feys in 1958 for the simply typed lambda calculus. In 1968, Roger Hindley worked on extending the algorithm and proved that it always produced the most general type. In 1978, Robin Milner solely developed an equivalent algorithm called Algorithm W while working on designing ML and in 1985 Luis Damas proved that Milner's algorithm was complete and extended it to support polymorphic references.\cite{lee_2018}
-Algorithm M derived from Algorithm W was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. 
-These algorithms are called the Hindely-Milner type inference algorithms, Algorithm W and Algorithm M. Algorithm W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm M traverse the syntax tree in the opposite direction
-of Algorithm W. Types are inferred from the top of the syntax tree down.
+The original type inference algorithm was invented by Haskell Curry and Robert Feys in 1958 for the simply typed lambda calculus. In 1968, Roger Hindley worked on extending the algorithm and proved that it always produced the most general type. In 1978, Robin Milner solely developed an equivalent algorithm called Algorithm \W while working on designing ML and in 1985 Luis Damas proved that Milner's algorithm was complete and extended it to support polymorphic references.\cite{lee_2018}
+Algorithm \M derived from Algorithm \W was not formally presented until
+1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
+These algorithms are called the Hindley-Milner type inference algorithms, Algorithm W and Algorithm \M. Algorithm \W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm \M traverse the syntax tree in the opposite direction
+of Algorithm \W. Types are inferred from the top of the syntax tree down.
 
 
 \section{Our Work}
-To do our work, we have created a toy language, and rules for that language, that demonstrate type inferencing with Algorithm M.
-Inspiration for this comes from a paper demonstrating Algorithm W in
+To do our work, we have created a toy language, and rules for that language, that demonstrate type inferencing with Algorithm \M.
+Inspiration for this comes from a paper demonstrating Algorithm \W in
 a similar manner.  \cite{algwstepbystep}
-We chose to use Algorithm M because Algorithm W is the more popular and more commonly used algorithm and also Algorithm M always finds type errors earlier by considering a less number of expressions than Algorithm W as proposed by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
-We would implement Algorithm  M with our toy language to demonstrate how type inferencing works in functional programming.
+We chose to use Algorithm \M because Algorithm \W is the more popular and more commonly used algorithm and also Algorithm \M always finds type errors earlier by considering a less number of expressions than Algorithm \W as proposed by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
+We would implement Algorithm \M with our toy language to demonstrate how type inferencing works in functional programming.
 
 \subsection{Our Toy Language}
 
@@ -83,7 +84,7 @@ them.
 \subsection{Type Inferencing Rules}
 
 The type inferencing rules are rules specific to the language.  These
-are used with Algorithm M, Algorithm W or any other type inferencing
+are used with Algorithm \M, Algorithm \W or any other type inferencing
 algorithm.  Presented here are the rules necessary to infer
 types for our toy language.    These rules are part of
 an existing set of language rules.\cite{Lee:1998:PFL:291891.291892}.
@@ -107,7 +108,7 @@ Finally, there are two related rules for the definition
 and application of functions.  For the definition of a function,
 there are two types, the type of the input and the type of the output.
 After adding the type of the input, $e_1$, to the context, we check
-the type of the output of the funcion, and make sure that it matches
+the type of the output of the function, and make sure that it matches
 the given input and output type.
 
 To apply the function, we need the type of the function and the argument.
