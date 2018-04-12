@@ -55,7 +55,7 @@ The most common type of type inferencing that languages use  is the Hindley-Miln
 \subsection{History}
 The original type inference algorithm was invented by Haskell Curry and Robert Feys in 1958 for the simply typed lambda calculus. In 1968, Roger Hendley worked on extending the algorithm and proved that it always produced the most general type. In 1978, Robin Milner solely developed an equivalent algorithm called Algorithm W while working on designing ML and in 1985 Luis Damas proved that Milner's algorithm was complete and extended it to support polymorphic references.\cite{lee_2018} 
 Algorithm M derived from Algorithm W was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. 
-These algorithms are called the Hindely-Milner type inference algorithms were Algorithm W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm M is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down. 
+These algorithms are called the Hindely-Milner type inference algorithms, Algorithm W and Algorithm M. Algorithm W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm M is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down. 
 
 
 \section{Our Work}
