@@ -6,4 +6,4 @@ In this folder is a slideshow presentation along with it's corresponding script,
 for this project.
 
 To run the code, be sure to install Haskell using this link: https://www.haskell.org/downloads 
-and be suer to check out our makefile.
+and be sure to check out our makefile.
