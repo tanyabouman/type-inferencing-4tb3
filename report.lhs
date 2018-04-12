@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{color}
+\usepackage{multicol}
 \usepackage{enumitem} % for alpha enumerations
 \usepackage{listings} % for putting code snippets
 \lstset{
@@ -83,6 +84,11 @@ The first rule is the constant rule, which simply states that
 a constant has an associated type.  These rules are part of
 an existing set of language rules.\cite{Lee:1998:PFL:291891.291892}.
 
+\begin{multicols}{2}
+(CON)
+\columnbreak
+$\Gamma$ $\vdash$ ( ) : $\iota$
+\end{multicols}
 
 The next rule states that in order to know the type of the variable,
 we look it up from the context.  This context or environment takes the
