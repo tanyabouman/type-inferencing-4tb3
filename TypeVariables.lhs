@@ -128,8 +128,8 @@ The inference cases for literals are also the same
 as the previous ones.
 
 Additionally, the type environment now much include
-infomation about type variables.  Type variables are
-only defined within the context of a specific funcion,
+information about type variables.  Type variables are
+only defined within the context of a specific function,
 not for the entire program.
 \begin{code}
 data TypeEnv = TypeEnv (M.Map String Type) (M.Map String Type)

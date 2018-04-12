@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{color}
 \usepackage{multicol}
+\usepackage{graphicx}
 \usepackage{enumitem} % for alpha enumerations
 \usepackage{listings} % for putting code snippets
 \lstset{
@@ -89,25 +90,17 @@ algorithm.  Presented here are the rules necessary to infer
 types for our toy language.    These rules are part of
 an existing set of language rules.\cite{Lee:1998:PFL:291891.291892}.
 
-% \includegraphics[width=\textwidth]{file3.png}
 The first rule is the constant rule, which simply states that
 a constant has an associated type.
 
-\begin{multicols}{2}
-(CON)
-\columnbreak
-$\Gamma$ $\vdash$ ( ) : $\iota$
-\end{multicols}
+\includegraphics[width=0.6\textwidth]{rule1.png}
+
 
 The next rule states that in order to know the type of the variable,
 we look it up from the context.  This context or environment takes the
 form of a symbol table in a parser.
 
-\begin{multicols*}{2}
-(VAR)
-\columnbreak
-$\frac{\Gamma(x) \succ \tau}{\Gamma \vdash x: \tau}$
-\end{multicols*}
+\includegraphics[width=0.6\textwidth]{rule2.png}
 
 Finally, there are two related rules for the definition
 and application of functions.  For the definition of a function,
@@ -116,14 +109,14 @@ After adding the type of the input, $e_1$, to the context, we check
 the type of the output of the function, and make sure that it matches
 the given input and output type.
 
-
+\includegraphics[width=0.7\textwidth]{rule3.png}
 
 To apply the function, we need the type of the function and the argument.
 After finding the function type, we check that the argument matches
 the input type and return the output type of the function as the final
 result.
 
-
+\includegraphics[width=0.8\textwidth]{rule4.png}
 
 \subsection{Inferencing}
 

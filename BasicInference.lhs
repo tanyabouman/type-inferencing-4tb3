@@ -225,7 +225,7 @@ It produces the type TInteger which is the correct type for the literal 5
 \end{comment}
 
 \item
-Also, let's consider inferring a type when we have a bool literal 'True' with type Unknown
+Also, let's consider inferring a type when we have a \texttt{TBool} literal 'True' with type Unknown
 \begin{code}
   let example4 = BoolLiteral True Unknown
   let test4 = infer M.empty example4
