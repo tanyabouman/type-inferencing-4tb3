@@ -102,13 +102,20 @@ The next rule states that in order to know the type of the variable,
 we look it up from the context.  This context or environment takes the
 form of a symbol table in a parser.
 
+\begin{multicols*}{2}
+(VAR)
+\columnbreak
+$$\frac{$\Gamma$(x) $\succ$ $\tau$}{$\Gamma$ $\vdash$ x: $\tau$}$$
+\end{multicols*}
 
 Finally, there are two related rules for the definition
 and application of functions.  For the definition of a function,
 there are two types, the type of the input and the type of the output.
 After adding the type of the input, $e_1$, to the context, we check
-the type of the output of the funcion, and make sure that it matches
+the type of the output of the function, and make sure that it matches
 the given input and output type.
+
+
 
 To apply the function, we need the type of the function and the argument.
 After finding the function type, we check that the argument matches
