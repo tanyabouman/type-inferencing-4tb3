@@ -175,13 +175,35 @@ infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =  -- first get a fresh type v
 Similarly, for the application of a function, the argument to the
 function might indicate a more specific type to the output, so
 we keep track of that in the type variable environment.
+The type variable environment becomes useful here for storing
+the new specific type of the variable and retrieving it later for
+use as the output type.
+First this function finds separately the types of the function
+and of the argument.  After checking the compatibility of the input
+type, it checks if the argument made the function more specific.
+Note that the type of the function remains unchanged by applying
+it to a more specific argument.  For example, a function of type
+\texttt{a -> a} still has the same type, even after being applied
+to an integer.  Later on the program, it could be applied to a boolean.
+The more specific type of the function only exists for a particular
+application.
+Finally, it unifies the given argument with the expected output from
+the function.
 \begin{code}
 infer env@(TypeEnv vs tvars) e@(Application e1 e2 typ) = do
   e1type <- infer env e1
   (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
   e2type <- infer env e2
   inType <- unify e2type fin
-  unify typ fout
+  let tnew = case fin of
+            TVar v -> M.insert v inType tvars
+            _ -> tvars
+  case fout of
+    TVar v ->
+      case M.lookup v tnew of
+        Just t -> unify typ t
+        Nothing -> unify typ fout
+    _ -> unify typ fout
 \end{code}
 
 

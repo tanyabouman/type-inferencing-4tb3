@@ -92,14 +92,21 @@ unify s t =
   else Left $ "Error: could not match type " ++ show s ++ " with " ++ show t
 \end{code}
 
-First we infer the types of constant literals.  These are quite simple.
-If the type signature given is an integer or if there is no type
-signature, we simply return integer as the type.
-Otherwise there is an error.
-% maybe include an example of how to get this error
+Next, we get to the actual inference algorithm, as described by
+Lee and Yi. \cite{Lee:1998:PFL:291891.291892}  In order to do inference
+with variables, we keep track of these in a basic symbol table which
+maps from the name of the variable to its type.  This allows the
+definition of a variable in one place in the code and its use elsewhere.
 \begin{code}
 type TypeEnv = M.Map String Type
+\end{code}
 
+First we infer the types of constant literals.  These are quite simple.
+For an integer literal, if the type signature given is an integer or
+if there is no type
+signature, we simply return integer as the type.
+Otherwise there is an error.
+\begin{code}
 infer :: TypeEnv -> Expression -> Either String Type
 infer env e@(IntLiteral i typ) = unify TInteger typ
 infer env e@(BoolLiteral b typ) = unify TBool typ
