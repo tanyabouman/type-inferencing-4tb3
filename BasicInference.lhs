@@ -8,14 +8,8 @@ import Data.Either
 
 \end{comment}
 
-%FIXME: should the type be included in these data types?
-% there should be a type included, because there might have been
-% a type annotation.
 
 \begin{code}
-
--- these are the currently available types;
--- this might be expanded
 data Type = TString
           | TInteger
           | TBool
@@ -31,9 +25,13 @@ data Expression = Var String Type
                 | Application Expression Expression Type
                 deriving (Eq, Ord)
 \end{code}
+
+Here is code that pretty prints code from the syntax tree.
 Pretty printing the language is necessary in order to give proper errors that
 relate back to the actual code.
-% is there a benefit to separating pretty from show? does this really need to be included in the report
+While the pretty print might not exactly match the program text,
+it will be close enough that the program can relate back to what
+they wrote.  This also helps us for debugging.
 \begin{code}
 instance Show Expression where
   show (IntLiteral int typ) =
@@ -77,14 +75,10 @@ instance Show Type where
 \section{Basic Type Inference}
 
 
-This is inference with \M
-
-
-\begin{code}
-
-\end{code}
-
-This would be a more interesting function if there were type variables,
+This is inference with \M.  First we start with a helper function,
+\texttt{unify}.
+It would be a more interesting function if there were
+type variables,
 but for now, it just checks that the two types match.
 \begin{code}
 unify :: Type -> Type -> Either String Type

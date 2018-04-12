@@ -73,7 +73,10 @@ are not constrained by type classes.
 
 \subsection{Type Inferencing Rules}
 
-
+The type inferencing rules are rules specific to the language.  These
+are used with Algorithm M, Algorithm W or any other type inferencing
+algorithm.  Presented here are the rules necessary to infer
+types for our toy language.
 
 
 \subsection{Inferencing}
@@ -92,9 +95,11 @@ inferencing algorithm will detect that.
 
 \section{Conclusion}
 
-To conclude, type inferencing is a very interesting feature in the programming world. It uses Algorithms M
-or W to infer the types of variables when undeclared at compile time, thus enabling the programmer to be faster.
-Our example toy language shows how Algorithm M and the type inferencing system work. In the future, it would be 
+To conclude, type inferencing is a very interesting feature in the
+programming world. It can use Algorithm M, Algorithm W or other similar
+algorithm to infer the types of variables which are undeclared at
+compile time, thus enabling the programmer to be faster.
+Our example toy language shows how Algorithm M and the type inferencing system work. In the future, it would be
 interesting to see if type inferencing could be applied across all languages.
 
 
