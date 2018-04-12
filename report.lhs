@@ -44,22 +44,29 @@ ashworel, boumante, fiberet}
 \maketitle
 
 \section{Introduction}
-Type inferencing can be referred to as the process of analyzing type information in a program based on the use of some of its variables at compile time.\cite{duggan_bent_1996}
+Type inferencing is the process of analyzing type information in a program based on the use of some of its variables at compile time.\cite{duggan_bent_1996}
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables, by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
 the type of a variable, but these types are dynamic\cite{pythonsummary}, 
-and therefore not the topic of the current report.
-The most common type of type inferencing that languages use  is the Hindley-Milner type system, which has two main implementations, Algorithm W and Algorithm M.
+and therefore not the topic of the current report, since
+this report focusses on compile time type inferencing.
+The most common type of type inferencing that languages use is the
+Hindley-Milner type system, which has two main implementations,
+Algorithm W and Algorithm M.
 
 \subsection{History}
-The original type inference algorithm was invented by Haskell Curry and Robert Feys in 1958 for the simply typed lambda calculus. In 1968, Roger Hendley worked on extending the algorithm and proved that it always produced the most general type. In 1978, Robin Milner solely developed an equivalent algorithm called Algorithm W while working on designing ML and in 1985 Luis Damas proved that Milner's algorithm was complete and extended it to support polymorphic references.\cite{lee_2018} 
+The original type inference algorithm was invented by Haskell Curry and Robert Feys in 1958 for the simply typed lambda calculus. In 1968, Roger Hindley worked on extending the algorithm and proved that it always produced the most general type. In 1978, Robin Milner solely developed an equivalent algorithm called Algorithm W while working on designing ML and in 1985 Luis Damas proved that Milner's algorithm was complete and extended it to support polymorphic references.\cite{lee_2018}
 Algorithm M derived from Algorithm W was not formally presented until 1998 by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. 
-These algorithms are called the Hindely-Milner type inference algorithms, Algorithm W and Algorithm M. Algorithm W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm M is the exact inverse of Algorithm W. Types are inferred from the top of the syntax tree down. 
+These algorithms are called the Hindely-Milner type inference algorithms, Algorithm W and Algorithm M. Algorithm W is the standard algorithm that works bottom to top which means that if a syntax tree were built from a piece of code, types would be inferred starting from the bottom while Algorithm M traverse the syntax tree in the opposite direction
+of Algorithm W. Types are inferred from the top of the syntax tree down.
 
 
 \section{Our Work}
-To do our work, we have created a toy language, and rules for that language, that demonstrate type inferencing with Algorithm M. We chose to use Algorithm M because Algorithm W is the more popular and more commonly used algorithm and also Algorithm M always finds type errors earlier by considering a less number of expressions than Algorithm W as proposed by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}. 
+To do our work, we have created a toy language, and rules for that language, that demonstrate type inferencing with Algorithm M.
+Inspiration for this comes from a paper demonstrating Algorithm W in
+a similar manner.  \cite{algwstepbystep}
+We chose to use Algorithm M because Algorithm W is the more popular and more commonly used algorithm and also Algorithm M always finds type errors earlier by considering a less number of expressions than Algorithm W as proposed by Oukseh Lee and Kwangkeun Yi\cite{Lee:1998:PFL:291891.291892}.
 We would implement Algorithm  M with our toy language to demonstrate how type inferencing works in functional programming.
 
 \subsection{Our Toy Language}
@@ -68,20 +75,21 @@ The toy language for the purpose of this project is a
 small portion of Haskell, allowing only the types
 \texttt{Int}, \texttt{Bool}, \texttt{String} and functions
 on those types.  Later on in this report, we extend
-the language to also include type variables, but these
-are not constrained by type classes.
+the language to also include type variables, but only a very
+limited use of them, as there are no type classes to constrain
+them.
 
 \subsection{Type Inferencing Rules}
 
 The type inferencing rules are rules specific to the language.  These
 are used with Algorithm M, Algorithm W or any other type inferencing
 algorithm.  Presented here are the rules necessary to infer
-types for our toy language.
+types for our toy language.    These rules are part of
+an existing set of language rules.\cite{Lee:1998:PFL:291891.291892}.
 
 % \includegraphics[width=\textwidth]{file3.png}
 The first rule is the constant rule, which simply states that
-a constant has an associated type.  These rules are part of
-an existing set of language rules.\cite{Lee:1998:PFL:291891.291892}.
+a constant has an associated type.
 
 
 The next rule states that in order to know the type of the variable,
@@ -109,7 +117,10 @@ Let's assume that a parser has already produced a syntax tree, of type
 \texttt{Expression}, as given below.
 The \texttt{Type} that is given from the parser is the type given in the
 annotation.  The annotation might or might not be correct. The type
-inferencing algorithm will detect that.
+inferencing algorithm will detect that.  The \texttt{Unknown}
+type is not part of the language and should not exist at the
+end of the type inferencing.  The syntax tree given by the parser,
+however, often still contains \texttt{Unknown}'s.
 
 \input{BasicInference.lhs}
 
@@ -129,8 +140,12 @@ To conclude, type inferencing is a very interesting feature in the
 programming world. It can use Algorithm M, Algorithm W or other similar
 algorithm to infer the types of variables which are undeclared at
 compile time, thus enabling the programmer to be faster.
-Our example toy language shows how Algorithm M and the type inferencing system work. In the future, it would be
-interesting to see if type inferencing could be applied across all languages.
+Our example toy language shows how Algorithm M and the type
+inferencing system work.
+This only shows how type inferencing works for a very simple type
+system.  However, the same kind of system can also do inference
+for a much more complicated type system, such as the one found in
+Haskell.
 
 
 \bibliographystyle{ieeetr}

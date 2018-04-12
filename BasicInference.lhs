@@ -30,8 +30,9 @@ Here is code that pretty prints code from the syntax tree.
 Pretty printing the language is necessary in order to give proper errors that
 relate back to the actual code.
 While the pretty print might not exactly match the program text,
-it will be close enough that the program can relate back to what
-they wrote.  This also helps us for debugging.
+it will be close enough that the programmer can relate back to what
+they wrote.  This also helps us for debugging, since it is
+easier to read than the expression type.
 \begin{code}
 instance Show Expression where
   show (IntLiteral int typ) =
@@ -97,6 +98,7 @@ Lee and Yi. \cite{Lee:1998:PFL:291891.291892}  In order to do inference
 with variables, we keep track of these in a basic symbol table which
 maps from the name of the variable to its type.  This allows the
 definition of a variable in one place in the code and its use elsewhere.
+The process is similar for booleans and strings.
 \begin{code}
 type TypeEnv = M.Map String Type
 \end{code}
@@ -118,8 +120,7 @@ Next we move on to the variable case.
 If the variable is defined and the type matches the current expected type,
 then we return that matching type.
 If the variable is not defined or the type does not match, there is an
-error.  Note that the parser should have already found the error
-if the variable did not exist in the
+error.
 \begin{code}
 infer env e@(Var v typ) =
   case M.lookup v env of
@@ -128,8 +129,8 @@ infer env e@(Var v typ) =
 \end{code}
 
 Inferencing on functions is more interesting because the argument of the
-function needs to be made available in the context for the body of the
-function.
+function needs to be made available in the type environment for the
+body of the function.
 
 \begin{code}
 infer env e@(EFunc v exp typ) =
@@ -140,7 +141,8 @@ infer env e@(EFunc v exp typ) =
 \end{code}
 
 
-
+For application inference, we find the type of the function and
+the argument, and then check that these two work together properly.
 \begin{code}
 infer env e@(Application e1 e2 typ) = do
   e1type <- infer env e1
@@ -189,7 +191,7 @@ that it is an integer.
 \end{code}
 \end{comment}
 
-\item A literal '5' with type Bool.
+\item A literal `5' with type Bool.
 \begin{code}
   let example2 = IntLiteral 5 TBool
   let test2 = infer M.empty example2
@@ -207,7 +209,7 @@ This, on the other hand, produces an error, because the value
 
 \item Now we move beyond checking whether or not the type signature is
 correct, to inferring a type when the signature is missing. Lets check with a
-literal '5' and type Unknown
+literal `5' and type Unknown
 \begin{code}
   let example3 = IntLiteral 5 Unknown
   let test3 = infer M.empty example3
@@ -244,7 +246,7 @@ Lastly in inferring a type, we can consider when we have a String literal with t
   let example5 = StringLiteral "Hello world" Unknown
   let test5 = infer M.empty example5
 \end{code}
-It produces the type TString which is the correct type for the string literal 'Hello World'
+It produces the type TString which is the correct type for the string literal ``Hello World''
 \begin{comment}
 \begin{code}
   putStr "Example 5:  "
@@ -255,7 +257,7 @@ It produces the type TString which is the correct type for the string literal 'H
 \end{comment}
 
 \item
-A string literal 'Hi there' with type Bool
+A string literal ``Hi there'' with type Bool
 \begin{code}
   let example6 = StringLiteral "Hi there" TBool
   let test6 = infer M.empty example6
@@ -272,7 +274,9 @@ As expected this would produce an error because we have a string literal which i
 
 
 \item
-A function with type Unkown
+A function with type Unknown.  The Unknown type is where
+the type variables will become useful, since having Unknown types
+could be dangerous.
 \begin{code}
   let example7 = EFunc "x" (BoolLiteral False Unknown) Unknown
   let test7 = infer M.empty example7
@@ -289,7 +293,9 @@ A function with type Unkown
 
 
 \item
-A function application with type Unknown
+A function application with type Unknown.
+Since the function body is the boolean
+false, the output type is false.
 \begin{code}
   let example8 = Application example7 (IntLiteral 5 Unknown) Unknown
   let test8 = infer M.empty example8
@@ -312,15 +318,36 @@ are the same, so further type inferencing in the next step
 will not tell us that the result of the application is an
 \texttt{Int}.
 \begin{code}
-example9 = EFunc "x" (Var "x" Unknown) Unknown
-test9 = infer M.empty example9
+  let example9 = EFunc "x" (Var "x" Unknown) Unknown
+  let test9 = infer M.empty example9
 \end{code}
-
-
-\item
+\begin{comment}
 \begin{code}
-example10 = Application example9 (IntLiteral 10 Unknown) Unknown
+  putStr "Example 9:  "
+  print example9
+  putStr "Type:       "
+  print test9
 \end{code}
+\end{comment}
+
+\item Here is where the trouble begins.  Since \texttt{infer} does
+not know if the two Unknowns are the same or not, it is unable to
+determine that the result type should be an integer.  This leads
+us to the next sections, where we add type variables to that language,
+so that we can check whether or not thse two \texttt{Unknown} types
+must be the same
+\begin{code}
+  let example10 = Application example9 (IntLiteral 10 Unknown) Unknown
+  let test10 = infer M.empty example10
+\end{code}
+\begin{comment}
+\begin{code}
+  putStr "Example 10:  "
+  print example10
+  putStr "Type:       "
+  print test10
+\end{code}
+\end{comment}
 
 \end{enumerate}
 
