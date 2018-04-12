@@ -333,9 +333,11 @@ will not tell us that the result of the application is an
 \item Here is where the trouble begins.  Since \texttt{infer} does
 not know if the two Unknowns are the same or not, it is unable to
 determine that the result type should be an integer.  This leads
-us to the next sections, where we add type variables to that language,
-so that we can check whether or not thse two \texttt{Unknown} types
-must be the same
+us to the next section, where we add type variables to that language,
+so that we can check whether or not these two \texttt{Unknown} types
+must be the same.  This returns \texttt{Unknown}, but it should be
+a \texttt{TInteger}, since the input and output both have the type
+of the input, 10.
 \begin{code}
   let example10 = Application example9 (IntLiteral 10 Unknown) Unknown
   let test10 = infer M.empty example10

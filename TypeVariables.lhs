@@ -2,6 +2,7 @@
 \begin{code}
 import qualified Data.Map as M
 \end{code}
+\end{comment}
 
 \section{Inference with Type Variables}
 
@@ -70,8 +71,8 @@ instance Show Expression where
 \end{code}
 \end{comment}
 
-However, the \texttt{Show} instance will be different.
-
+However, the \texttt{Show} instance of the type will be different,
+since there is an added case for the type variable.
 
 \begin{code}
 instance Show Type where
@@ -85,7 +86,7 @@ instance Show Type where
 
 Now, we continue on again with \texttt{unify}
 and \texttt{infer}.  This time \texttt{unify}
-is much more interesting, because it has to
+is more interesting, because it has to
 deal with type variables.  Only the added cases
 for type variables are shown.
 
@@ -97,8 +98,16 @@ unify :: Type -> Type -> Either String Type
 \begin{code}
 unify Unknown t = Right t
 unify t Unknown = Right t
+\end{code}
+\end{comment}
+
+\begin{code}
 unify (TVar s) t = Right t
 unify t (TVar s) = Right t
+\end{code}
+
+\begin{comment}
+\begin{code}
 unify (TFunc a b) (TFunc c d) =
   TFunc <$> (unify a c) <*> (unify b d)
 unify s t =
@@ -109,19 +118,13 @@ unify s t =
 \end{comment}
 
 
-% FIXME: sort this out after the inference algorithm
-\begin{code}
-
-
-\end{code}
-
 The only case that changes for \texttt{infer} is the
 function case and the application, because there is now the option of
-giving the type \texttt{a -> a} to a function. It
+giving the type \texttt{a -> a} or \texttt{a -> b} to a function. It
 is not necessary to consider type variables for variable
 expressions, since the type of a variable must be
 determined somewhere by a literal.
-The inference cases for literals are the same
+The inference cases for literals are also the same
 as the previous ones.
 
 Additionally, the type environment now much include
@@ -146,13 +149,13 @@ infer (TypeEnv env _) e@(Var v typ) =
 \end{code}
 \end{comment}
 
-To infer the type of a function, we get available type variables
+To infer the type of a function, we get new type variables
 and assign those to the argument and output of the function.
 After unification, those types might still be variables,
 or they might be a specific type.  Otherwise the inference continues
 in the same manner as before.
 \begin{code}
-infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =  -- first get a fresh type variable
+infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =
   let
     nextVar :: String -> String
     nextVar (v:vs) =
@@ -173,7 +176,7 @@ infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =  -- first get a fresh type v
 \end{code}
 
 Similarly, for the application of a function, the argument to the
-function might indicate a more specific type to the output, so
+function might indicate that the output type is more specific, so
 we keep track of that in the type variable environment.
 The type variable environment becomes useful here for storing
 the new specific type of the variable and retrieving it later for
@@ -225,37 +228,56 @@ main = do
 \end{code}
 \end{comment}
 
-Here are examples.
 \begin{enumerate}
-\item
+\item Again, we have our example of a identity function which
+takes and returns the same type.  However, this time, \texttt{infer}
+recognizes that the input and output types must be the same, and
+gives them the same type variables.
 \begin{code}
-  let example15 = EFunc "x" (Var "x" Unknown) Unknown
-  let test15 = infer (TypeEnv M.empty M.empty) example15
+  let example11 = EFunc "x" (Var "x" Unknown) Unknown
+  let test11 = infer (TypeEnv M.empty M.empty) example11
 \end{code}
 
 \begin{comment}
 \begin{code}
-  putStr "Example 15:  "
-  print example15
+  putStr "Example 11:  "
+  print example11
   putStr "Type:        "
-  print test15
+  print test11
 \end{code}
 \end{comment}
 
 
-\item
+\item This is again another function example from before,
+which now needs a type variable.
 \begin{code}
-  let example16 = EFunc "x" (IntLiteral 5 Unknown) Unknown
-  let test16 = infer (TypeEnv M.empty M.empty) example16
+  let example12 = EFunc "x" (IntLiteral 5 Unknown) Unknown
+  let test12 = infer (TypeEnv M.empty M.empty) example12
 \end{code}
 
 
 \begin{comment}
 \begin{code}
-  putStr "Example 16:  "
-  print example16
+  putStr "Example 12:  "
+  print example12
   putStr "Type:        "
-  print test16
+  print test12
+\end{code}
+\end{comment}
+
+\item This is the example that caused trouble before.  Now
+it can tell that the output must be an integer, since the argument
+is a \texttt{TInteger}.
+\begin{code}
+  let example13 = Application (EFunc "x" (Var "x" Unknown) Unknown) (IntLiteral 10 Unknown) Unknown
+  let test13 = infer (TypeEnv M.empty M.empty) example13
+\end{code}
+\begin{comment}
+\begin{code}
+  putStr "Example 13:  "
+  print example13
+  putStr "Type:        "
+  print test13
 \end{code}
 \end{comment}
 
@@ -268,17 +290,17 @@ this case, the function looks like:
 \end{verbatim}
 in which \texttt{x} and \texttt{y} are both arguments.
 \begin{code}
-  let example17 = EFunc "x" (EFunc "y" (Var "x" Unknown) Unknown) Unknown
-  let test17 = infer (TypeEnv M.empty M.empty) example17
+  let example14 = EFunc "x" (EFunc "y" (Var "x" Unknown) Unknown) Unknown
+  let test14 = infer (TypeEnv M.empty M.empty) example14
 \end{code}
 
 
 \begin{comment}
 \begin{code}
-  putStr "Example 17:  "
-  print example17
+  putStr "Example 14:  "
+  print example14
   putStr "Type:        "
-  print test17
+  print test14
 \end{code}
 \end{comment}
 
