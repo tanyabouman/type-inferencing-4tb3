@@ -44,7 +44,7 @@ ashworel, boumante, fiberet}
 \maketitle
 
 \section{Introduction}
-Type inference can be referred to as the process of analyzing type information in a program based on the use of some of its variables at compile time.\cite{duggan_bent_1996}
+Type inferencing can be referred to as the process of analyzing type information in a program based on the use of some of its variables at compile time.\cite{duggan_bent_1996}
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables, by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
@@ -70,11 +70,6 @@ small portion of Haskell, allowing only the types
 on those types.  Later on in this report, we extend
 the language to also include type variables, but these
 are not constrained by type classes.
-
-\subsection{Type Inferencing Rules}
-
-
-
 
 \subsection{Inferencing}
 
