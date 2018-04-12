@@ -106,7 +106,7 @@ form of a symbol table in a parser.
 \begin{multicols*}{2}
 (VAR)
 \columnbreak
-$$\frac{$\Gamma$(x) $\succ$ $\tau$}{$\Gamma$ $\vdash$ x: $\tau$}$$
+$\frac{\Gamma(x) \succ \tau}{\Gamma \vdash x: \tau}$
 \end{multicols*}
 
 Finally, there are two related rules for the definition
