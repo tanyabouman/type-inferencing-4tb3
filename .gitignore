@@ -1,11 +1,11 @@
-
+.stack-work/
 .DS_Store
 BasicInference
 *.hi
 *.o
-ExecSummary.aux
+*.aux
 *.bbl
 *.blg
 *.log
-report.aux
 report.out
+type-inferencing-4tb3.cabal

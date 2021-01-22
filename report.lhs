@@ -25,18 +25,12 @@
     }}
   {}
 
-\begin{comment}
-\begin{code}
-import qualified Data.Map as M
-\end{code}
-\end{comment}
-
 \newcommand{\M}{$\mathcal{M}$}
 \newcommand{\W}{$\mathcal{W}$}
 
-\title{Type Inferencing in Functional Languages} 
-\author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima \\ 
-001402976, 001416669, 001231043 \\ 
+\title{Type Inferencing in Functional Languages}
+\author{Emily Ashworth, Tanya Bouman, Tonye Fiberesima \\
+001402976, 001416669, 001231043 \\
 ashworel, boumante, fiberet}
 \date{April 9, 2018}
 
@@ -50,7 +44,7 @@ Type inferencing is the process of analyzing type information in a program based
 Many advanced languages, such as Swift\cite{swifttypedocs} and Haskell\cite{haskelltypedocs},
 allow programmers to skip defining the types of variables, by doing type inferencing at compile time.
 Others, like Python, also allow the programmer to avoid defining
-the type of a variable, but these types are dynamic\cite{pythonsummary}, 
+the type of a variable, but these types are dynamic\cite{pythonsummary},
 and therefore not the topic of the current report, since
 this report focusses on compile time type inferencing.
 The most common type of type inferencing that languages use is the
@@ -129,9 +123,9 @@ type is not part of the language and should not exist at the
 end of the type inferencing.  The syntax tree given by the parser,
 however, often still contains \texttt{Unknown}'s.
 
-\input{BasicInference.lhs}
+\input{src/BasicInference.lhs}
 
-\input{TypeVariables.lhs}
+\input{src/TypeVariables.lhs}
 
 % swift type inferencing description; maybe useful as a reference??? https://github.com/apple/swift/blob/master/docs/TypeChecker.rst
 

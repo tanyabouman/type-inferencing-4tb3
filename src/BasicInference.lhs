@@ -1,6 +1,10 @@
 
 \begin{comment}
 \begin{code}
+{-# LANGUAGE FlexibleInstances #-}
+
+module BasicInference where
+
 import qualified Data.Map as M
 import Data.Either
 \end{code}
@@ -24,6 +28,8 @@ data Expression = Var String Type
                 | EFunc String Expression Type
                 | Application Expression Expression Type
                 deriving (Eq, Ord)
+
+instance MonadFail (Either String) where fail = Left
 \end{code}
 
 Here is code that pretty prints code from the syntax tree.
@@ -135,7 +141,7 @@ body of the function.
 \begin{code}
 infer env e@(EFunc v exp typ) =
   case unify typ (TFunc Unknown Unknown) of
-    Right (TFunc fin fout) -> 
+    Right (TFunc fin fout) ->
       TFunc fin <$> (infer (M.insert v fin env) exp)
     _ -> Left $ "Not a function: " ++ show e
 \end{code}
@@ -352,6 +358,4 @@ of the input, 10.
 \end{comment}
 
 \end{enumerate}
-
-
 

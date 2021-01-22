@@ -1,5 +1,8 @@
 \begin{comment}
 \begin{code}
+module TypeVariables where
+
+import BasicInference()
 import qualified Data.Map as M
 \end{code}
 \end{comment}
