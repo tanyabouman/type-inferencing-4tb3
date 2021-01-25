@@ -20,6 +20,9 @@ jobs:
           name: Resolve/Update Dependencies
           command: stack setup
       - run:
+          name: Build project
+          command: stack build
+      - run:
           name: Run tests
           command: stack test
       - run:
