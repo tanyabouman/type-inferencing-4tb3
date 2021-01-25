@@ -65,3 +65,9 @@ packages:
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
+
+# Show many more warnings than default
+ghc-options:
+    # All packages
+    "$locals": -Wall
+
