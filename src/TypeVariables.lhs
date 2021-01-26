@@ -60,9 +60,9 @@ instance Show Expression where
     case typ of
       Unknown -> str
       _ -> str ++ " :: " ++ show typ
-  show (EFunc str exp typ) =
+  show (EFunc str expr typ) =
     let
-      funStr =  "(\\" ++ str ++ " -> " ++ show exp ++ ")"
+      funStr =  "(\\" ++ str ++ " -> " ++ show expr ++ ")"
     in
     case typ of
       Unknown -> funStr
@@ -105,8 +105,8 @@ unify t Unknown = Right t
 \end{comment}
 
 \begin{code}
-unify (TVar s) t = Right t
-unify t (TVar s) = Right t
+unify (TVar _) t = Right t
+unify t (TVar _) = Right t
 \end{code}
 
 \begin{comment}
@@ -142,9 +142,9 @@ data TypeEnv = TypeEnv (M.Map String Type) (M.Map String Type)
 \begin{code}
 
 infer :: TypeEnv -> Expression -> Either String Type
-infer env e@(IntLiteral i typ) = unify TInteger typ
-infer env e@(BoolLiteral b typ) = unify TBool typ
-infer env e@(StringLiteral s typ) = unify TString typ
+infer _ (IntLiteral _ typ) = unify TInteger typ
+infer _ (BoolLiteral _ typ) = unify TBool typ
+infer _ (StringLiteral _ typ) = unify TString typ
 infer (TypeEnv env _) e@(Var v typ) =
   case M.lookup v env of
     Nothing -> Left ("Variable not in scope: " ++ show e)
@@ -158,12 +158,13 @@ After unification, those types might still be variables,
 or they might be a specific type.  Otherwise the inference continues
 in the same manner as before.
 \begin{code}
-infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =
+infer (TypeEnv typs vars) e@(EFunc var expr typ) =
   let
     nextVar :: String -> String
-    nextVar (v:vs) =
-      case M.lookup (v:vs) vars of
-        Nothing -> v:vs
+    nextVar [] = error "nextVar: should not be called on an empty string"
+    nextVar vr@(v:vs) =
+      case M.lookup vr vars of
+        Nothing -> vr
         _ -> nextVar ((succ v):vs)
     var1 = nextVar "a"
     var2 = nextVar var1
@@ -172,9 +173,9 @@ infer env@(TypeEnv typs vars) e@(EFunc v exp typ) =
     Right (TFunc fin fout) ->
       let
         newVars = M.insert var1 fin $ M.insert var2 fout vars
-        newTypes = M.insert v fin typs
+        newTypes = M.insert var fin typs
       in
-      TFunc fin <$> (infer (TypeEnv newTypes newVars) exp)
+      TFunc fin <$> (infer (TypeEnv newTypes newVars) expr)
     _ -> Left $ "Not a function: " ++ show e
 \end{code}
 
@@ -196,7 +197,7 @@ application.
 Finally, it unifies the given argument with the expected output from
 the function.
 \begin{code}
-infer env@(TypeEnv vs tvars) e@(Application e1 e2 typ) = do
+infer env@(TypeEnv _ tvars) (Application e1 e2 typ) = do
   e1type <- infer env e1
   (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
   e2type <- infer env e2
