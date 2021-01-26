@@ -10,3 +10,7 @@ for this project.
 
 To run the code, be sure to install Haskell using this link: https://www.haskell.org/downloads 
 and be sure to check out our makefile.
+
+## Updates January 2021
+Used this repository to play around with stack and CircleCI settings.
+
