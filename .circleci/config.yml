@@ -18,7 +18,7 @@ jobs:
           command: stack setup
       - run:
           name: Run tests
-          command: stack test
+          command: stack test --ghc-options -Werror
       - run:
           name: Install executable
           command: stack install
