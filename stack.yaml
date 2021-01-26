@@ -69,5 +69,4 @@ packages:
 # Show many more warnings than default
 ghc-options:
     # All packages
-    "$locals": -Wall
-
+    "$locals": -Wall -fno-warn-orphans

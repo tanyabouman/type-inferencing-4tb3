@@ -6,7 +6,6 @@
 module BasicInference where
 
 import qualified Data.Map as M
-import Data.Either
 \end{code}
 
 
@@ -57,9 +56,9 @@ instance Show Expression where
     case typ of
       Unknown -> str
       _ -> str ++ " :: " ++ show typ
-  show (EFunc str exp typ) =
+  show (EFunc str expr typ) =
     let
-      funStr =  "(\\" ++ str ++ " -> " ++ show exp ++ ")"
+      funStr =  "(\\" ++ str ++ " -> " ++ show expr ++ ")"
     in
     case typ of
       Unknown -> funStr
@@ -116,9 +115,9 @@ signature, we simply return integer as the type.
 Otherwise there is an error.
 \begin{code}
 infer :: TypeEnv -> Expression -> Either String Type
-infer env e@(IntLiteral i typ) = unify TInteger typ
-infer env e@(BoolLiteral b typ) = unify TBool typ
-infer env e@(StringLiteral s typ) = unify TString typ
+infer _ (IntLiteral _ typ) = unify TInteger typ
+infer _ (BoolLiteral _ typ) = unify TBool typ
+infer _ (StringLiteral _ typ) = unify TString typ
 \end{code}
 
 
@@ -139,10 +138,10 @@ function needs to be made available in the type environment for the
 body of the function.
 
 \begin{code}
-infer env e@(EFunc v exp typ) =
+infer env e@(EFunc v expr typ) =
   case unify typ (TFunc Unknown Unknown) of
-    Right (TFunc fin fout) ->
-      TFunc fin <$> (infer (M.insert v fin env) exp)
+    Right (TFunc fin _) ->
+      TFunc fin <$> (infer (M.insert v fin env) expr)
     _ -> Left $ "Not a function: " ++ show e
 \end{code}
 
@@ -150,11 +149,11 @@ infer env e@(EFunc v exp typ) =
 For application inference, we find the type of the function and
 the argument, and then check that these two work together properly.
 \begin{code}
-infer env e@(Application e1 e2 typ) = do
+infer env (Application e1 e2 typ) = do
   e1type <- infer env e1
   e2type <- infer env e2
   (TFunc fin fout) <- unify e1type (TFunc Unknown typ)
-  inType <- unify e2type fin
+  _inType <- unify e2type fin
   unify typ fout
 \end{code}
 
