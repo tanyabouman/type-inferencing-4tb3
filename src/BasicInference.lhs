@@ -14,7 +14,7 @@ import Data.Either
 
 
 \begin{code}
-ata Type = TString
+data Type = TString
           | TInteger
           | TBool
           | Unknown
